@@ -50,6 +50,29 @@ composer run dev
 
 Para parar, use Ctrl+C no terminal.
 
+## Importar conversas pelo terminal
+
+Exporte a conversa no WhatsApp (com ou sem mídia) e rode:
+
+```bash
+php artisan zapvault:import "Conversa do WhatsApp com Fulano.zip"
+```
+
+O comando analisa os arquivos (aceita vários de uma vez, `.txt` ou `.zip`, inclusive `.zip` com outros `.zip` dentro), mostra o resumo de cada um (mensagens novas, repetidas, anexos encontrados e faltantes) e pergunta se deve concluir. Importar o mesmo arquivo de novo não duplica mensagens.
+
+Opções:
+
+- `--commit`: conclui sem perguntas
+- `--merge` (padrão) ou `--separate`: o que fazer quando já existe conversa com o mesmo nome
+- `--me="Seu Nome"`: informa seu nome nas mensagens
+
+Sem `--commit`, fora do modo interativo, nada é gravado.
+
+Outros comandos:
+
+- `php artisan zapvault:verify`: confere contagens, índice de busca e arquivos de mídia (`--hashes` confere também o conteúdo de cada arquivo)
+- `php artisan zapvault:reindex`: reconstrói o índice de busca
+
 ## Testes
 
 ```bash
@@ -61,4 +84,4 @@ npm test        # frontend (Vitest)
 
 A especificação, o protótipo e as tarefas ficam em `docs/`. As decisões tomadas durante o desenvolvimento ficam em `docs/DECISOES.md`.
 
-Status: em desenvolvimento (tarefa 00 concluída)
+Status: em desenvolvimento (tarefas 00 a 02 concluídas)
