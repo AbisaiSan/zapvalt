@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{--accent:#00A884;--accent-tx:#008069;--accent-soft:rgba(0,168,132,.12);--btn:#008069;--btn-tx:#FFFFFF;--chat:#EFEAE2;--page:#F7F8FA;--panel:#FFFFFF;--head:#F0F2F5;--sel:#F0F2F5;--hover:#F5F6F6;--press:rgba(11,20,26,.07);--out:#D9FDD3;--in:#FFFFFF;--tx:#111B21;--tx2:#667781;--tx2-out:#56695F;--div:#E9EDEF;--div2:#C9D1D6;--chip:#FFFFFF;--sys:#FFFFFF;--inset:rgba(11,20,26,.05);--track:rgba(17,27,33,.16);--hl:#FBE38E;--hl-tx:#111B21;--hl-cur:#F2A900;--hl-cur-tx:#111B21;--flash:rgba(0,168,132,.22);--danger:#D93F3F;--ok-bg:#E2F5EE;--ok-tx:#00684F;--err-bg:#FDE8E7;--err-tx:#B42318;--warn-bg:#FFF5DA;--warn-tx:#6E4A00;--viewer:rgba(240,242,245,.97);--skel:#E4E8EB;--shadow:0 1px .5px rgba(11,20,26,.13);--pop:0 4px 18px rgba(11,20,26,.16);--s0:#B5306B;--s1:#1E63B8;--s2:#2B7A3D;--s3:#B4501A;--s4:#7B3FB0;--s5:#00756A;--s6:#A33A3A;--s7:#4F5BB5}
+html[data-zv-theme="dark"]{--accent:#00A884;--accent-tx:#21C49E;--accent-soft:rgba(0,168,132,.16);--btn:#00A884;--btn-tx:#0B141A;--chat:#0B141A;--page:#0B141A;--panel:#111B21;--head:#202C33;--sel:#2A3942;--hover:#202C33;--press:rgba(233,237,239,.08);--out:#005C4B;--in:#202C33;--tx:#E9EDEF;--tx2:#8696A0;--tx2-out:#A8CFC5;--div:#222D34;--div2:#3B4A54;--chip:#182229;--sys:#182229;--inset:rgba(0,0,0,.2);--track:rgba(233,237,239,.22);--hl:#6E5A12;--hl-tx:#FFF6D6;--hl-cur:#F2B90F;--hl-cur-tx:#111B21;--flash:rgba(0,168,132,.28);--danger:#F15C6D;--ok-bg:#0E3A30;--ok-tx:#5FD6B5;--err-bg:#3D1F22;--err-tx:#FF9C93;--warn-bg:#3A3015;--warn-tx:#F3CB6B;--viewer:rgba(11,20,26,.97);--skel:#24323A;--shadow:0 1px .5px rgba(0,0,0,.35);--pop:0 6px 24px rgba(0,0,0,.5);--s0:#F58BB4;--s1:#7DB7FF;--s2:#7FD18F;--s3:#FFA36B;--s4:#C79BFF;--s5:#4FD1C0;--s6:#FF8A80;--s7:#A8B2FF}
+html,body{margin:0;height:100%;background:var(--panel)}
+body{font-family:"Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--tx);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer}
+input{font:inherit;color:inherit}
+input::placeholder{color:var(--tx2)}
+a{color:var(--accent-tx)}
+a:hover{color:var(--accent)}
+*::-webkit-scrollbar{width:6px;height:6px}
+*::-webkit-scrollbar-thumb{background:var(--div2);border-radius:3px}
+*::-webkit-scrollbar-track{background:transparent}
+@keyframes zvPulse{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes zvSpin{to{transform:rotate(360deg)}}
+@keyframes zvUp{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
+</style>
+</helmet>
+<div style="position:fixed; inset:0; display:flex; overflow:hidden; background:var(--panel); color:var(--tx); font-family:'Segoe UI','Helvetica Neue',Helvetica,Arial,sans-serif; font-size:14px">
+  <aside style="display:{{ leftDisplay }}; flex:{{ leftFlex }}; min-width:{{ leftMin }}; max-width:{{ leftMax }}; flex-direction:column; height:100%; background:var(--panel); border-right:1px solid var(--div); position:relative; z-index:1">
+    <header style="height:60px; flex:none; display:flex; align-items:center; gap:4px; padding:0 8px 0 14px; background:var(--head)">
+      <div style="width:32px; height:32px; border-radius:9px; background:#00A884; display:flex; align-items:center; justify-content:center; flex:none">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M5 3.5h14a2.5 2.5 0 0 1 2.5 2.5v9a2.5 2.5 0 0 1-2.5 2.5h-7.5L7 21v-3.5H5A2.5 2.5 0 0 1 2.5 15V6A2.5 2.5 0 0 1 5 3.5z" style="fill:#fff"></path><rect x="8.6" y="9.6" width="6.8" height="5" rx="1.2" style="fill:#00A884"></rect><path d="M10 9.6V8.4a2 2 0 0 1 4 0v1.2" style="fill:none; stroke:#00A884; stroke-width:1.5"></path></svg>
+      </div>
+      <div style="font-size:17px; font-weight:600; letter-spacing:-.01em; flex:1; min-width:0; margin-left:6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">ZapVault</div>
+      <button onClick="{{ openImport }}" title="Importar conversas" style="height:34px; padding:0 11px 0 8px; border-radius:17px; display:flex; align-items:center; gap:5px; background:var(--btn); color:var(--btn-tx); font-size:14px; font-weight:500; flex:none; margin-right:2px">
+        <svg width="18" height="18" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round"><path d="M12 15V4.5M7.5 9L12 4.5 16.5 9"></path><path d="M4.5 14.5v3.5a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-3.5"></path></svg>
+        <span>Importar</span>
+      </button>
+      <button onClick="{{ toggleTheme }}" title="Alternar tema claro/escuro" style="width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--tx2); flex:none" style-hover="background:var(--press)">
+        <sc-if value="{{ themeIsLight }}" hint-placeholder-val="{{ true }}"><svg width="21" height="21" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round"><path d="M19.5 14.2A7.5 7.5 0 0 1 9.8 4.5a7.5 7.5 0 1 0 9.7 9.7z"></path></svg></sc-if>
+        <sc-if value="{{ themeIsDark }}" hint-placeholder-val="{{ false }}"><svg width="21" height="21" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"></path></svg></sc-if>
+      </button>
+      <button onClick="{{ openSettings }}" title="Configurações" style="width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--tx2); flex:none; background:{{ setBtnBg }}" style-hover="background:var(--press)">
+        <svg width="21" height="21" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"></path><circle cx="15" cy="7" r="2"></circle><circle cx="9" cy="17" r="2"></circle></svg>
+      </button>
+    </header>
+    <div style="padding:8px 12px; flex:none; border-bottom:1px solid var(--div)">
+      <div style="height:36px; border-radius:8px; background:var(--head); display:flex; align-items:center; gap:10px; padding:0 8px 0 12px; color:var(--tx2)">
+        <svg width="17" height="17" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; flex:none"><circle cx="11" cy="11" r="6.5"></circle><path d="M20 20l-4.2-4.2"></path></svg>
+        <input ref="{{ searchRef }}" value="{{ q }}" onChange="{{ onQ }}" placeholder="Buscar conversas e mensagens" style="flex:1; min-width:0; border:0; outline:0; background:transparent; font-size:14px; height:100%; color:var(--tx)">
+        <sc-if value="{{ noQ }}" hint-placeholder-val="{{ true }}"><span style="font-size:11px; color:var(--tx2); border:1px solid var(--div2); border-radius:4px; padding:1px 5px; white-space:nowrap; flex:none">{{ kbd }}</span></sc-if>
+        <sc-if value="{{ hasQ }}" hint-placeholder-val="{{ false }}"><button onClick="{{ clearQ }}" title="Limpar busca (Esc)" style="width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--tx2); flex:none" style-hover="background:var(--press)"><svg width="16" height="16" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></sc-if>
+      </div>
+      <sc-if value="{{ hint1 }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px; color:var(--tx2); padding:6px 4px 0">Digite pelo menos 2 letras para buscar</div></sc-if>
+    </div>
+    <div style="flex:1; min-height:0; overflow-y:auto">
+      <sc-if value="{{ showSkel }}" hint-placeholder-val="{{ true }}">
+        <sc-for list="{{ skel }}" as="k" hint-placeholder-count="9">
+          <div style="display:flex; align-items:center; gap:13px; height:72px; padding:0 16px 0 13px">
+            <div style="width:48px; height:48px; border-radius:50%; background:var(--skel); flex:none; animation:zvPulse 1.4s ease-in-out infinite"></div>
+            <div style="flex:1; display:flex; flex-direction:column; gap:9px">
+              <div style="height:12px; width:52%; border-radius:6px; background:var(--skel); animation:zvPulse 1.4s ease-in-out infinite"></div>
+              <div style="height:10px; width:82%; border-radius:5px; background:var(--skel); animation:zvPulse 1.4s ease-in-out infinite"></div>
+            </div>
+          </div>
+        </sc-for>
+      </sc-if>
+      <sc-if value="{{ showEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:56px 28px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:10px">
+          <div style="width:64px; height:64px; border-radius:50%; background:var(--head); display:flex; align-items:center; justify-content:center; color:var(--tx2)"><svg width="28" height="28" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round"><path d="M12 15V4.5M7.5 9L12 4.5 16.5 9"></path><path d="M4.5 14.5v3.5a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-3.5"></path></svg></div>
+          <div style="font-size:16px; color:var(--tx); margin-top:4px">Nenhuma conversa importada</div>
+          <div style="font-size:13px; line-height:19px; color:var(--tx2); max-width:250px; text-wrap:pretty">Importe arquivos .txt ou .zip exportados do celular para montar seu acervo.</div>
+          <button onClick="{{ openImport }}" style="margin-top:8px; height:38px; padding:0 18px; border-radius:19px; background:var(--btn); color:var(--btn-tx); font-size:14px; font-weight:500">Importar conversas</button>
+        </div>
+      </sc-if>
+      <sc-if value="{{ showList }}" hint-placeholder-val="{{ false }}">
+        <sc-for list="{{ chatItems }}" as="c" hint-placeholder-count="10">
+          <div onClick="{{ c.onClick }}" style="display:flex; align-items:center; gap:13px; height:72px; padding-left:13px; cursor:pointer; background:{{ c.bg }}" style-hover="background:var(--hover)">
+            <div style="width:48px; height:48px; border-radius:50%; flex:none; background:{{ c.avBg }}; color:#fff; display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:500">
+              <sc-if value="{{ c.notNum }}">{{ c.initials }}</sc-if>
+              <sc-if value="{{ c.isNum }}"><svg width="26" height="26" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round"><circle cx="12" cy="9" r="3.6"></circle><path d="M5 20a7 7 0 0 1 14 0"></path></svg></sc-if>
+            </div>
+            <div style="flex:1; min-width:0; height:100%; display:flex; flex-direction:column; justify-content:center; gap:3px; border-bottom:1px solid var(--div); padding-right:15px">
+              <div style="display:flex; align-items:baseline; gap:8px"><span style="flex:1; min-width:0; font-size:16px; color:var(--tx); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ c.name }}</span><span style="font-size:12px; color:var(--tx2); flex:none">{{ c.date }}</span></div>
+              <div style="font-size:14px; color:var(--tx2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ c.preview }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </sc-if>
+      <sc-if value="{{ showSearch }}" hint-placeholder-val="{{ false }}">
+        <div style="position:sticky; top:0; z-index:1; background:var(--panel); display:flex; border-bottom:1px solid var(--div)">
+          <button onClick="{{ tabChats }}" style="flex:1; height:46px; display:flex; align-items:center; justify-content:center; gap:8px; font-size:14px; font-weight:500; color:{{ tabChatsColor }}; border-bottom:2px solid {{ tabChatsLine }}">Conversas<span style="font-size:12px; padding:1px 8px; border-radius:10px; background:var(--head); color:var(--tx2)">{{ convCount }}</span></button>
+          <button onClick="{{ tabMsgs }}" style="flex:1; height:46px; display:flex; align-items:center; justify-content:center; gap:8px; font-size:14px; font-weight:500; color:{{ tabMsgsColor }}; border-bottom:2px solid {{ tabMsgsLine }}">Mensagens<span style="font-size:12px; padding:1px 8px; border-radius:10px; background:var(--head); color:var(--tx2)">{{ msgCount }}</span></button>
+        </div>
+        <sc-if value="{{ searching }}">
+          <sc-for list="{{ skel4 }}" as="k">
+            <div style="padding:14px 16px; border-bottom:1px solid var(--div); display:flex; flex-direction:column; gap:9px">
+              <div style="height:12px; width:45%; border-radius:6px; background:var(--skel); animation:zvPulse 1.2s ease-in-out infinite"></div>
+              <div style="height:10px; width:88%; border-radius:5px; background:var(--skel); animation:zvPulse 1.2s ease-in-out infinite"></div>
+            </div>
+          </sc-for>
+        </sc-if>
+        <sc-if value="{{ showConvTab }}">
+          <sc-for list="{{ convResults }}" as="c">
+            <div onClick="{{ c.onClick }}" style="display:flex; align-items:center; gap:13px; height:72px; padding-left:13px; cursor:pointer; background:{{ c.bg }}" style-hover="background:var(--hover)">
+              <div style="width:48px; height:48px; border-radius:50%; flex:none; background:{{ c.avBg }}; color:#fff; display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:500">{{ c.initials }}</div>
+              <div style="flex:1; min-width:0; height:100%; display:flex; flex-direction:column; justify-content:center; gap:3px; border-bottom:1px solid var(--div); padding-right:15px">
+                <div style="display:flex; align-items:baseline; gap:8px"><span style="flex:1; min-width:0; font-size:16px; color:var(--tx); white-space:nowrap; overflow:hidden; text-overflow:ellipsis"><sc-for list="{{ c.nameSegs }}" as="g"><span style="background:{{ g.bg }}; color:{{ g.fg }}; border-radius:3px">{{ g.t }}</span></sc-for></span><span style="font-size:12px; color:var(--tx2); flex:none">{{ c.date }}</span></div>
+                <div style="font-size:14px; color:var(--tx2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ c.preview }}</div>
+              </div>
+            </div>
+          </sc-for>
+          <sc-if value="{{ convNone }}">
+            <div style="padding:48px 28px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:8px">
+              <div style="width:56px; height:56px; border-radius:50%; background:var(--head); display:flex; align-items:center; justify-content:center; color:var(--tx2)"><svg width="24" height="24" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round"><circle cx="11" cy="11" r="6.5"></circle><path d="M20 20l-4.2-4.2"></path></svg></div>
+              <div style="font-size:15px; color:var(--tx); margin-top:6px; text-wrap:pretty">{{ convNoneText }}</div>
+              <div style="font-size:13px; color:var(--tx2); line-height:18px; max-width:260px; text-wrap:pretty">{{ convNoneSub }}</div>
+            </div>
+          </sc-if>
+        </sc-if>
+        <sc-if value="{{ showMsgTab }}">
+          <sc-if value="{{ msgSome }}"><div style="padding:12px 16px 6px; font-size:12px; color:var(--tx2); letter-spacing:.02em">{{ msgSummary }}</div></sc-if>
+          <sc-for list="{{ msgResults }}" as="r">
+            <div onClick="{{ r.onClick }}" style="padding:11px 16px 12px; border-bottom:1px solid var(--div); cursor:pointer; background:{{ r.bg }}" style-hover="background:var(--hover)">
+              <div style="display:flex; align-items:baseline; gap:8px; margin-bottom:3px"><span style="flex:1; min-width:0; font-size:15px; color:var(--tx); overflow:hidden; white-space:nowrap; text-overflow:ellipsis">{{ r.name }}</span><span style="font-size:12px; color:var(--tx2); flex:none">{{ r.date }}</span></div>
+              <div style="font-size:14px; line-height:19px; max-height:38px; overflow:hidden; color:var(--tx2); overflow-wrap:anywhere">{{ r.prefix }}<sc-for list="{{ r.segs }}" as="g"><span style="background:{{ g.bg }}; color:{{ g.fg }}; border-radius:3px">{{ g.t }}</span></sc-for></div>
+            </div>
+          </sc-for>
+          <sc-if value="{{ msgNone }}">
+            <div style="padding:48px 28px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:8px">
+              <div style="width:56px; height:56px; border-radius:50%; background:var(--head); display:flex; align-items:center; justify-content:center; color:var(--tx2)"><svg width="24" height="24" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round"><circle cx="11" cy="11" r="6.5"></circle><path d="M20 20l-4.2-4.2"></path></svg></div>
+              <div style="font-size:15px; color:var(--tx); margin-top:6px; text-wrap:pretty">{{ msgNoneText }}</div>
+              <div style="font-size:13px; color:var(--tx2); line-height:18px; max-width:260px; text-wrap:pretty">{{ msgNoneSub }}</div>
+            </div>
+          </sc-if>
+        </sc-if>
+      </sc-if>
+    </div>
+  </aside>
+  <main style="display:{{ rightDisplay }}; flex:1 1 auto; min-width:0; height:100%; flex-direction:column; position:relative; background:var(--page)">
+    <sc-if value="{{ isWelcome }}" hint-placeholder-val="{{ true }}">
+      <div style="flex:1; min-height:0; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 24px; text-align:center">
+        <div style="width:72px; height:72px; border-radius:20px; background:#00A884; display:flex; align-items:center; justify-content:center">
+          <svg width="44" height="44" viewBox="0 0 24 24"><path d="M5 3.5h14a2.5 2.5 0 0 1 2.5 2.5v9a2.5 2.5 0 0 1-2.5 2.5h-7.5L7 21v-3.5H5A2.5 2.5 0 0 1 2.5 15V6A2.5 2.5 0 0 1 5 3.5z" style="fill:#fff"></path><rect x="8.6" y="9.6" width="6.8" height="5" rx="1.2" style="fill:#00A884"></rect><path d="M10 9.6V8.4a2 2 0 0 1 4 0v1.2" style="fill:none; stroke:#00A884; stroke-width:1.5"></path></svg>
+        </div>
+        <sc-if value="{{ archiveFull }}" hint-placeholder-val="{{ false }}">
+          <h1 style="margin:24px 0 8px; font-size:26px; font-weight:400; color:var(--tx)">Selecione uma conversa</h1>
+          <p style="margin:0; font-size:14px; line-height:21px; color:var(--tx2); max-width:400px; text-wrap:pretty">Escolha na lista ao lado ou busque por nome, palavra ou frase com <span style="font-size:12px; border:1px solid var(--div2); border-radius:4px; padding:1px 5px; white-space:nowrap">{{ kbd }}</span></p>
+          <div style="display:flex; margin-top:32px; border:1px solid var(--div); border-radius:12px; background:var(--panel); overflow:hidden">
+            <div style="padding:16px 32px; min-width:110px"><div style="font-size:30px; font-weight:300; color:var(--tx)">{{ statChats }}</div><div style="font-size:13px; color:var(--tx2); margin-top:2px">conversas</div></div>
+            <div style="width:1px; background:var(--div)"></div>
+            <div style="padding:16px 32px; min-width:110px"><div style="font-size:30px; font-weight:300; color:var(--tx)">{{ statMsgs }}</div><div style="font-size:13px; color:var(--tx2); margin-top:2px">mensagens</div></div>
+          </div>
+          <div style="font-size:12px; color:var(--tx2); margin-top:12px">{{ statPeriod }}</div>
+        </sc-if>
+        <sc-if value="{{ archiveEmpty }}" hint-placeholder-val="{{ false }}">
+          <h1 style="margin:24px 0 8px; font-size:26px; font-weight:400; color:var(--tx)">Seu acervo está vazio</h1>
+          <p style="margin:0; font-size:14px; line-height:21px; color:var(--tx2); max-width:400px; text-wrap:pretty">Importe conversas exportadas do celular, em .txt ou .zip, para consultar quando quiser.</p>
+          <button onClick="{{ openImport }}" style="margin-top:24px; height:40px; padding:0 20px; border-radius:20px; background:var(--btn); color:var(--btn-tx); font-size:14px; font-weight:500">Importar conversas</button>
+        </sc-if>
+        <sc-if value="{{ archiveBoot }}" hint-placeholder-val="{{ true }}">
+          <h1 style="margin:24px 0 8px; font-size:26px; font-weight:400; color:var(--tx)">Abrindo seu acervo…</h1>
+          <div style="display:flex; gap:12px; margin-top:24px">
+            <div style="width:140px; height:84px; border-radius:12px; background:var(--skel); animation:zvPulse 1.4s ease-in-out infinite"></div>
+            <div style="width:140px; height:84px; border-radius:12px; background:var(--skel); animation:zvPulse 1.4s ease-in-out infinite"></div>
+          </div>
+        </sc-if>
+      </div>
+      <div style="flex:none; padding:14px; display:flex; justify-content:center; align-items:center; gap:6px; font-size:12px; color:var(--tx2)">
+        <svg width="14" height="14" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round"><rect x="5" y="10.5" width="14" height="9.5" rx="2"></rect><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"></path></svg>
+        <span>Acervo local e somente leitura. Nada é enviado.</span>
+      </div>
+    </sc-if>
+    <sc-if value="{{ isChat }}" hint-placeholder-val="{{ false }}">
+      <div style="flex:1; min-height:0; display:flex; flex-direction:column; background:var(--chat); position:relative">
+        <header style="height:60px; flex:none; display:flex; align-items:center; gap:10px; padding:0 10px 0 14px; background:var(--head); position:relative; z-index:3">
+          <sc-if value="{{ showBack }}"><button onClick="{{ backToList }}" title="Voltar" style="width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--tx2); flex:none" style-hover="background:var(--press)"><svg width="22" height="22" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg></button></sc-if>
+          <div style="width:40px; height:40px; border-radius:50%; flex:none; background:{{ cAvBg }}; color:#fff; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:500">
+            <sc-if value="{{ cNotNum }}">{{ cInitials }}</sc-if>
+            <sc-if value="{{ cIsNum }}"><svg width="22" height="22" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round"><circle cx="12" cy="9" r="3.6"></circle><path d="M5 20a7 7 0 0 1 14 0"></path></svg></sc-if>
+          </div>
+          <div style="flex:1; min-width:0; margin-left:2px">
+            <div style="font-size:16px; color:var(--tx); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ cName }}</div>
+            <div style="font-size:13px; color:var(--tx2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ cSub }}</div>
+          </div>
+          <button onClick="{{ toggleDate }}" title="Pular para data" style="width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--tx2); flex:none; background:{{ dateBtnBg }}" style-hover="background:var(--press)"><svg width="21" height="21" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round"><rect x="3.5" y="5" width="17" height="15" rx="2"></rect><path d="M3.5 10h17M8 3v4M16 3v4"></path></svg></button>
+          <button onClick="{{ openIn }}" title="Buscar na conversa" style="width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--tx2); flex:none; background:{{ inBtnBg }}" style-hover="background:var(--press)"><svg width="21" height="21" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:1.9; stroke-linecap:round"><circle cx="11" cy="11" r="6.5"></circle><path d="M20 20l-4.2-4.2"></path></svg></button>
+          <sc-if value="{{ datePop }}">
+            <div onClick="{{ toggleDate }}" style="position:fixed; inset:0; z-index:4"></div>
+            <div style="position:absolute; top:54px; right:54px; width:250px; max-height:380px; overflow-y:auto; background:var(--panel); border-radius:10px; box-shadow:var(--pop); padding:6px 0; z-index:5">
+              <div style="padding:8px 16px 6px; font-size:12px; color:var(--tx2)">Pular para data</div>
+              <sc-for list="{{ days }}" as="d">
+                <button onClick="{{ d.onClick }}" style="width:100%; display:flex; align-items:center; gap:10px; padding:8px 16px; text-align:left" style-hover="background:var(--hover)">
+                  <span style="flex:1; min-width:0"><span style="display:block; font-size:14px; color:var(--tx)">{{ d.label }}</span><span style="display:block; font-size:12px; color:var(--tx2)">{{ d.wd }}</span></span>
+                  <span style="font-size:12px; color:var(--tx2)">{{ d.count }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </header>
+        <sc-if value="{{ inOpen }}">
+          <div style="flex:none; display:flex; align-items:center; gap:4px; padding:8px 10px 8px 14px; background:var(--panel); border-bottom:1px solid var(--div); position:relative; z-index:2">
+            <div style="flex:1; min-width:0; height:36px; border-radius:8px; background:var(--head); display:flex; align-items:center; gap:8px; padding:0 12px; color:var(--tx2); margin-right:4px">
+              <svg width="16" height="16" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; flex:none"><circle cx="11" cy="11" r="6.5"></circle><path d="M20 20l-4.2-4.2"></path></svg>
+              <input ref="{{ inRef }}" value="{{ inQ }}" onChange="{{ onInQ }}" onKeyDown="{{ onInKey }}" placeholder="Buscar nesta conversa" style="flex:1; min-width:0; border:0; outline:0; background:transparent; font-size:14px; height:100%; color:var(--tx)">
+              <span style="font-size:12px; color:{{ inCounterColor }}; white-space:nowrap; flex:none">{{ inCounter }}</span>
+            </div>
+            <button onClick="{{ inPrev }}" title="Anterior (Shift+Enter)" style="width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--tx2); opacity:{{ inNavOp }}; flex:none" style-hover="background:var(--press)"><svg width="20" height="20" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round"><path d="M6 15l6-6 6 6"></path></svg></button>
+            <button onClick="{{ inNext }}" title="Próxima (Enter)" style="width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--tx2); opacity:{{ inNavOp }}; flex:none" style-hover="background:var(--press)"><svg width="20" height="20" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round"><path d="M6 9l6 6 6-6"></path></svg></button>
+            <button onClick="{{ closeIn }}" title="Fechar busca (Esc)" style="width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--tx2); flex:none" style-hover="background:var(--press)"><svg width="18" height="18" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+          </div>
+        </sc-if>
+        <div ref="{{ msgRef }}" onScroll="{{ onMsgScroll }}" style="flex:1; min-height:0; overflow-y:auto; position:relative; padding:8px clamp(12px, 6%, 72px) 18px">
+          <sc-if value="{{ chatEmpty }}">
+            <div style="height:100%; display:flex; align-items:center; justify-content:center">
+              <div style="background:var(--chip); border-radius:10px; box-shadow:var(--shadow); padding:20px 24px; text-align:center; max-width:320px">
+                <div style="font-size:15px; color:var(--tx)">Nenhuma mensagem nesta conversa</div>
+                <div style="font-size:13px; color:var(--tx2); margin-top:6px; line-height:18px">O arquivo importado não tinha mensagens reconhecidas.</div>
+              </div>
+            </div>
+          </sc-if>
+          <sc-for list="{{ rows }}" as="r" hint-placeholder-count="0">
+            <sc-if value="{{ r.isMore }}"><div style="display:flex; justify-content:center; padding:10px 0 4px"><button onClick="{{ r.onMore }}" style="font-size:12.5px; color:var(--accent-tx); background:var(--chip); padding:6px 14px; border-radius:14px; box-shadow:var(--shadow)">Carregar mensagens anteriores</button></div></sc-if>
+            <sc-if value="{{ r.isLoading }}"><div style="display:flex; justify-content:center; align-items:center; gap:8px; padding:12px 0 4px; font-size:12.5px; color:var(--tx2)"><span style="width:14px; height:14px; border-radius:50%; border:2px solid var(--div2); border-top-color:var(--accent); animation:zvSpin .8s linear infinite; box-sizing:border-box"></span><span>Carregando mensagens anteriores</span></div></sc-if>
+            <sc-if value="{{ r.isStart }}"><div style="display:flex; justify-content:center; align-items:center; gap:10px; padding:14px 0 2px; font-size:12px; color:var(--tx2)"><span style="width:28px; height:1px; background:var(--div2)"></span><span>Início do histórico</span><span style="width:28px; height:1px; background:var(--div2)"></span></div></sc-if>
+            <sc-if value="{{ r.isDay }}"><div data-day="{{ r.day }}" style="display:flex; justify-content:center; margin:12px 0 6px"><span style="background:var(--chip); color:var(--tx2); font-size:12.5px; padding:5px 12px; border-radius:8px; box-shadow:var(--shadow)">{{ r.label }}</span></div></sc-if>
+            <sc-if value="{{ r.isSys }}">
+              <div style="display:flex; justify-content:center; margin:8px 0">
+                <div style="max-width:min(520px, 88%); background:var(--sys); color:var(--tx2); font-size:12.5px; line-height:17px; padding:6px 12px; border-radius:8px; box-shadow:var(--shadow); display:flex; align-items:center; gap:7px; text-align:center">
+                  <sc-if value="{{ r.lock }}"><svg width="13" height="13" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2.2; stroke-linecap:round; flex:none"><rect x="5" y="10.5" width="14" height="9.5" rx="2"></rect><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"></path></svg></sc-if>
+                  <sc-if value="{{ r.call }}"><svg width="15" height="15" viewBox="0 0 24 24" style="fill:none; stroke:var(--danger); stroke-width:2; stroke-linejoin:round; flex:none"><path d="M6.5 3.5h3l1.5 4.5-2 1.2a11 11 0 0 0 5.8 5.8l1.2-2 4.5 1.5v3a2 2 0 0 1-2 2A16.5 16.5 0 0 1 4.5 5.5a2 2 0 0 1 2-2z"></path></svg></sc-if>
+                  <span>{{ r.text }}</span>
+                  <sc-if value="{{ r.hasTime }}"><span style="white-space:nowrap">· {{ r.time }}</span></sc-if>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ r.isMsg }}">
+              <div data-mid="{{ r.mid }}" style="display:flex; justify-content:{{ r.justify }}; margin:{{ r.mt }} -8px 0; padding:1px 8px; border-radius:8px; background:{{ r.flashBg }}; transition:background 1s ease">
+                <div style="position:relative; max-width:65%; min-width:0; background:{{ r.bubbleBg }}; border-radius:{{ r.radius }}; box-shadow:{{ r.shadow }}; padding:{{ r.pad }}; font-size:14px; line-height:19px; color:var(--tx)">
+                  <sc-if value="{{ r.showSender }}"><div style="font-size:12.5px; line-height:18px; font-weight:600; color:{{ r.senderColor }}; padding:{{ r.senderPad }}">{{ r.sender }}</div></sc-if>
+                  <sc-if value="{{ r.isText }}"><span style="white-space:pre-wrap; overflow-wrap:anywhere"><sc-for list="{{ r.segs }}" as="g"><span style="background:{{ g.bg }}; color:{{ g.fg }}; border-radius:3px">{{ g.t }}</span></sc-for></span><span style="display:inline-block; width:40px; height:1px"></span></sc-if>
+                  <sc-if value="{{ r.isVisual }}">
+                    <div onClick="{{ r.onOpen }}" style="position:relative; width:{{ r.mw }}; max-width:100%; aspect-ratio:{{ r.ratio }}; border-radius:6px; overflow:hidden; cursor:{{ r.cursor }}; background:{{ r.ph }}">
+                      <span style="position:absolute; left:8px; top:8px; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:10.5px; background:rgba(255,255,255,.8); color:#26343C; padding:2px 6px; border-radius:4px">{{ r.phLabel }}</span>
+                      <sc-if value="{{ r.isVideoReady }}">
+                        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center"><span style="width:52px; height:52px; border-radius:50%; background:rgba(11,20,26,.55); display:flex; align-items:center; justify-content:center; color:#fff"><svg width="22" height="22" viewBox="0 0 24 24" style="fill:currentColor"><path d="M8 5.5v13l10.5-6.5z"></path></svg></span></div>
+                        <span style="position:absolute; left:8px; bottom:7px; font-size:11px; color:#fff; display:flex; align-items:center; gap:4px; text-shadow:0 1px 2px rgba(0,0,0,.6)"><svg width="14" height="14" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linejoin:round"><rect x="3" y="6" width="12.5" height="12" rx="2"></rect><path d="M15.5 10.5l5-3v9l-5-3"></path></svg>{{ r.durLabel }}</span>
+                      </sc-if>
+                      <sc-if value="{{ r.loading }}"><div style="position:absolute; inset:0; background:var(--skel); display:flex; align-items:center; justify-content:center; animation:zvPulse 1.2s ease-in-out infinite"><span style="width:28px; height:28px; border-radius:50%; border:3px solid var(--div2); border-top-color:var(--accent); animation:zvSpin .8s linear infinite; box-sizing:border-box"></span></div></sc-if>
+                      <sc-if value="{{ r.error }}">
+                        <div style="position:absolute; inset:0; background:var(--head); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; padding:12px; text-align:center; color:var(--tx2); font-size:13px; line-height:17px">
+                          <svg width="26" height="26" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.5v5M12 16v.5"></path></svg>
+                          <span>{{ r.errText }}</span>
+                          <button onClick="{{ r.onRetry }}" style="font-size:13px; color:var(--accent-tx); font-weight:500; padding:4px 12px; border-radius:14px; border:1px solid var(--div2)">Tentar de novo</button>
+                        </div>
+                      </sc-if>
+                    </div>
+                    <sc-if value="{{ r.hasCap }}"><div style="padding:5px 5px 3px 6px; white-space:pre-wrap; overflow-wrap:anywhere"><sc-for list="{{ r.capSegs }}" as="g"><span style="background:{{ g.bg }}; color:{{ g.fg }}; border-radius:3px">{{ g.t }}</span></sc-for><span style="display:inline-block; width:40px; height:1px"></span></div></sc-if>
+                  </sc-if>
+                  <sc-if value="{{ r.isAudio }}">
+                    <div style="display:flex; align-items:center; gap:10px; width:270px; max-width:100%; padding-bottom:12px">
+                      <button onClick="{{ r.onToggle }}" title="{{ r.playTitle }}" style="width:36px; height:36px; border-radius:50%; flex:none; background:var(--btn); color:var(--btn-tx); display:flex; align-items:center; justify-content:center">
+                        <sc-if value="{{ r.playing }}"><svg width="16" height="16" viewBox="0 0 24 24" style="fill:currentColor"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"></path></svg></sc-if>
+                        <sc-if value="{{ r.paused }}"><svg width="16" height="16" viewBox="0 0 24 24" style="fill:currentColor; margin-left:2px"><path d="M8 5.5v13l10.5-6.5z"></path></svg></sc-if>
+                      </button>
+                      <div style="flex:1; min-width:0">
+                        <div onClick="{{ r.onSeek }}" style="position:relative; height:16px; display:flex; align-items:center; cursor:pointer">
+                          <div style="width:100%; height:4px; border-radius:2px; background:var(--track)"></div>
+                          <div style="position:absolute; left:0; top:6px; height:4px; border-radius:2px; background:var(--accent); width:{{ r.pct }}"></div>
+                          <div style="position:absolute; top:2px; left:{{ r.pct }}; width:12px; height:12px; margin-left:-6px; border-radius:50%; background:var(--accent)"></div>
+                        </div>
+                        <div style="font-size:11px; color:{{ r.timeColor }}; margin-top:1px">{{ r.audioTime }}</div>
+                      </div>
+                      <button onClick="{{ r.onSpeed }}" title="Velocidade de reprodução" style="flex:none; min-width:40px; height:24px; padding:0 8px; border-radius:12px; background:var(--inset); color:var(--tx); font-size:12px; font-weight:600">{{ r.speedLabel }}</button>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ r.isDoc }}">
+                    <div onClick="{{ r.onOpen }}" title="Abrir pré-visualização" style="display:flex; align-items:center; gap:10px; width:290px; max-width:100%; padding:10px 10px 10px 12px; border-radius:6px; background:var(--inset); cursor:pointer; box-sizing:border-box">
+                      <div style="width:32px; height:40px; flex:none; border-radius:4px; background:{{ r.extBg }}; color:#fff; font-size:9.5px; font-weight:700; letter-spacing:.03em; display:flex; align-items:flex-end; justify-content:center; padding-bottom:5px; box-sizing:border-box">{{ r.ext }}</div>
+                      <div style="flex:1; min-width:0">
+                        <div style="font-size:14px; color:var(--tx); white-space:nowrap; overflow:hidden; text-overflow:ellipsis"><sc-for list="{{ r.docSegs }}" as="g"><span style="background:{{ g.bg }}; color:{{ g.fg }}; border-radius:3px">{{ g.t }}</span></sc-for></div>
+                        <div style="font-size:12px; color:{{ r.timeColor }}; margin-top:2px">{{ r.docMeta }}</div>
+                      </div>
+                      <button onClick="{{ r.onDownload }}" title="Baixar" style="width:32px; height:32px; flex:none; border-radius:50%; border:1.5px solid var(--div2); display:flex; align-items:center; justify-content:center; color:var(--tx2)"><svg width="16" height="16" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round"><path d="M12 4v11M7.5 10.5L12 15l4.5-4.5"></path><path d="M5 20h14"></path></svg></button>
+                    </div>
+                    <div style="height:16px"></div>
+                  </sc-if>
+                  <sc-if value="{{ r.isSticker }}">
+                    <div style="width:130px; height:130px; border-radius:24px; background:{{ r.ph }}; display:flex; align-items:center; justify-content:center"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:10.5px; background:rgba(255,255,255,.8); color:#26343C; padding:2px 6px; border-radius:4px">figurinha</span></div>
+                    <div style="display:flex; justify-content:flex-end; margin-top:4px"><span style="font-size:11px; color:var(--tx2); background:var(--chip); padding:1px 7px; border-radius:8px; box-shadow:var(--shadow)">{{ r.time }}</span></div>
+                  </sc-if>
+                  <sc-if value="{{ r.isMissing }}"><div style="display:flex; align-items:center; gap:7px; color:{{ r.timeColor }}; font-style:italic; padding-right:42px"><svg width="17" height="17" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; flex:none"><rect x="3.5" y="4.5" width="17" height="15" rx="2"></rect><path d="M4 5l16 14"></path></svg><span>Mídia não incluída na exportação</span></div></sc-if>
+                  <sc-if value="{{ r.isDeleted }}"><div style="display:flex; align-items:center; gap:7px; color:{{ r.timeColor }}; font-style:italic; padding-right:42px"><svg width="16" height="16" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; flex:none"><circle cx="12" cy="12" r="8"></circle><path d="M6.5 6.5l11 11"></path></svg><span>{{ r.delText }}</span></div></sc-if>
+                  <sc-if value="{{ r.timeNormal }}"><span style="position:absolute; right:8px; bottom:3px; font-size:11px; line-height:15px; color:{{ r.timeColor }}">{{ r.time }}</span></sc-if>
+                  <sc-if value="{{ r.timeOverlay }}"><span style="position:absolute; right:10px; bottom:7px; font-size:11px; color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.6)">{{ r.time }}</span></sc-if>
+                </div>
+              </div>
+            </sc-if>
+          </sc-for>
+        </div>
+        <sc-if value="{{ showJump }}">
+          <button onClick="{{ jumpBottom }}" title="Ir para o fim" style="position:absolute; right:22px; bottom:58px; width:42px; height:42px; border-radius:50%; background:var(--panel); color:var(--tx2); box-shadow:var(--pop); display:flex; align-items:center; justify-content:center; z-index:2">
+            <svg width="22" height="22" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round"><path d="M6 9l6 6 6-6"></path></svg>
+            <sc-if value="{{ hasBelow }}"><span style="position:absolute; top:-6px; right:-4px; min-width:20px; height:20px; padding:0 5px; box-sizing:border-box; border-radius:10px; background:var(--btn); color:var(--btn-tx); font-size:11px; font-weight:600; display:flex; align-items:center; justify-content:center">{{ below }}</span></sc-if>
+          </button>
+        </sc-if>
+        <footer style="flex:none; height:40px; display:flex; align-items:center; justify-content:center; gap:8px; background:var(--head); color:var(--tx2); font-size:13px; padding:0 16px; min-width:0">
+          <svg width="14" height="14" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; flex:none"><rect x="5" y="10.5" width="14" height="9.5" rx="2"></rect><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"></path></svg>
+          <span style="white-space:nowrap">Arquivo somente leitura</span>
+          <span style="opacity:.6">·</span>
+          <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12px; min-width:0">{{ footFile }}</span>
+        </footer>
+      </div>
+    </sc-if>
+    <sc-if value="{{ isImport }}" hint-placeholder-val="{{ false }}">
+      <div style="flex:1; min-height:0; display:flex; flex-direction:column">
+        <header style="height:60px; flex:none; display:flex; align-items:center; gap:10px; padding:0 16px 0 10px; background:var(--head)">
+          <button onClick="{{ closePage }}" title="Fechar (Esc)" style="width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--tx2); flex:none" style-hover="background:var(--press)"><svg width="22" height="22" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg></button>
+          <div style="flex:1; min-width:0; font-size:16px; color:var(--tx)">Importar conversas</div>
+          <span style="font-size:12px; color:var(--tx2); white-space:nowrap">{{ impProgressText }}</span>
+        </header>
+        <div style="flex:1; min-height:0; overflow-y:auto">
+          <div style="max-width:760px; margin:0 auto; padding:28px 24px 32px; display:flex; flex-direction:column; gap:20px">
+            <div>
+              <h2 style="margin:0 0 6px; font-size:20px; font-weight:500; color:var(--tx)">Traga conversas exportadas do celular</h2>
+              <p style="margin:0; font-size:14px; line-height:21px; color:var(--tx2); text-wrap:pretty">No aplicativo, abra a conversa e use Mais opções › Exportar conversa. Arquivos .txt trazem só o texto; .zip trazem também fotos, áudios e documentos.</p>
+            </div>
+            <div onDragOver="{{ onDragOver }}" onDragLeave="{{ onDragLeave }}" onDrop="{{ onDrop }}" style="border:2px dashed {{ dzBorder }}; background:{{ dzBg }}; border-radius:12px; padding:36px 24px; display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center; transition:background .15s, border-color .15s">
+              <div style="width:56px; height:56px; border-radius:50%; background:{{ dzIconBg }}; color:{{ dzIconFg }}; display:flex; align-items:center; justify-content:center"><svg width="26" height="26" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round"><path d="M12 15V4.5M7.5 9L12 4.5 16.5 9"></path><path d="M4.5 14.5v3.5a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-3.5"></path></svg></div>
+              <sc-if value="{{ dzDragging }}">
+                <div style="font-size:18px; font-weight:500; color:var(--accent-tx)">Solte aqui</div>
+                <div style="font-size:13px; color:var(--tx2)">Os arquivos são lidos neste computador</div>
+              </sc-if>
+              <sc-if value="{{ dzIdle }}" hint-placeholder-val="{{ true }}">
+                <div style="font-size:16px; color:var(--tx)">Arraste arquivos .txt ou .zip para cá</div>
+                <div style="font-size:13px; color:var(--tx2)">ou</div>
+                <button onClick="{{ addSamples }}" style="height:38px; padding:0 18px; border-radius:19px; background:var(--btn); color:var(--btn-tx); font-size:14px; font-weight:500">Escolher arquivos</button>
+              </sc-if>
+            </div>
+            <sc-if value="{{ hasFiles }}">
+              <div style="background:var(--panel); border:1px solid var(--div); border-radius:12px; overflow:hidden">
+                <sc-for list="{{ files }}" as="f">
+                  <div style="padding:14px 16px; border-bottom:1px solid var(--div); display:flex; flex-direction:column; gap:10px">
+                    <div style="display:flex; align-items:center; gap:12px">
+                      <div style="width:36px; height:36px; border-radius:8px; background:var(--head); color:var(--tx2); font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; flex:none">{{ f.ext }}</div>
+                      <div style="flex:1; min-width:0">
+                        <div style="font-size:14px; color:var(--tx); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ f.name }}</div>
+                        <div style="font-size:12px; color:var(--tx2); margin-top:1px">{{ f.size }} · {{ f.sub }}</div>
+                      </div>
+                      <span style="flex:none; font-size:12px; font-weight:500; padding:3px 10px; border-radius:12px; background:{{ f.pillBg }}; color:{{ f.pillFg }}; white-space:nowrap">{{ f.pillText }}</span>
+                    </div>
+                    <sc-if value="{{ f.isProc }}"><div style="height:4px; border-radius:2px; background:var(--track); overflow:hidden; margin-left:48px"><div style="height:100%; width:{{ f.pct }}; background:var(--accent); transition:width .15s linear"></div></div></sc-if>
+                    <sc-if value="{{ f.isDone }}">
+                      <div style="margin-left:48px; display:grid; grid-template-columns:repeat(auto-fit, minmax(118px, 1fr)); gap:8px">
+                        <sc-for list="{{ f.stats }}" as="t"><div style="background:var(--page); border:1px solid var(--div); border-radius:8px; padding:8px 10px"><div style="font-size:18px; color:{{ t.color }}">{{ t.n }}</div><div style="font-size:12px; color:var(--tx2)">{{ t.l }}</div></div></sc-for>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ f.isExists }}">
+                      <div style="margin-left:48px; background:var(--warn-bg); color:var(--warn-tx); border-radius:8px; padding:12px; display:flex; flex-direction:column; gap:10px; font-size:13px; line-height:18px">
+                        <span>Já existe uma conversa com <b>{{ f.conv }}</b> no acervo. As {{ f.rep }} mensagens repetidas não serão duplicadas.</span>
+                        <div style="display:flex; gap:8px; flex-wrap:wrap">
+                          <button onClick="{{ f.onMerge }}" style="height:32px; padding:0 14px; border-radius:16px; font-size:13px; font-weight:500; background:{{ f.mergeBg }}; color:{{ f.mergeFg }}; border:1px solid {{ f.mergeBd }}">Somar à existente</button>
+                          <button onClick="{{ f.onSeparate }}" style="height:32px; padding:0 14px; border-radius:16px; font-size:13px; font-weight:500; background:{{ f.sepBg }}; color:{{ f.sepFg }}; border:1px solid {{ f.sepBd }}">Manter separada</button>
+                        </div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ f.isErr }}">
+                      <div style="margin-left:48px; background:var(--err-bg); color:var(--err-tx); border-radius:8px; padding:12px; font-size:13px; line-height:18px; display:flex; flex-direction:column; gap:8px">
+                        <div style="display:flex; align-items:center; gap:8px"><span style="flex:1">{{ f.errText }}</span><button onClick="{{ f.toggleLines }}" style="font-size:13px; font-weight:600; color:var(--err-tx); text-decoration:underline; flex:none">{{ f.linesLabel }}</button></div>
+                        <sc-if value="{{ f.linesOpen }}">
+                          <div style="background:var(--panel); border-radius:6px; padding:8px 10px; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:12px; color:var(--tx); display:flex; flex-direction:column; gap:4px; overflow-x:auto">
+                            <sc-for list="{{ f.lines }}" as="l"><div style="display:flex; gap:12px; white-space:pre"><span style="color:var(--tx2); flex:none">{{ l.n }}</span><span>{{ l.t }}</span></div></sc-for>
+                          </div>
+                        </sc-if>
+                      </div>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ showName }}">
+              <div style="background:var(--panel); border:1px solid var(--div); border-radius:12px; padding:18px 20px; display:flex; flex-direction:column; gap:10px">
+                <div>
+                  <div style="font-size:16px; font-weight:500; color:var(--tx)">Este é o seu nome nas mensagens?</div>
+                  <div style="font-size:13px; color:var(--tx2); margin-top:4px; line-height:18px">As mensagens com esse nome aparecem à direita, como enviadas por você.</div>
+                </div>
+                <sc-for list="{{ nameOpts }}" as="o">
+                  <button onClick="{{ o.onClick }}" style="display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:8px; border:1px solid {{ o.bd }}; background:{{ o.bg }}; text-align:left; width:100%">
+                    <span style="width:18px; height:18px; border-radius:50%; border:2px solid {{ o.ring }}; display:flex; align-items:center; justify-content:center; flex:none; box-sizing:border-box"><span style="width:8px; height:8px; border-radius:50%; background:{{ o.dot }}"></span></span>
+                    <span style="flex:1; min-width:0"><span style="display:block; font-size:14px; color:var(--tx)">{{ o.label }}</span><span style="display:block; font-size:12px; color:var(--tx2)">{{ o.hint }}</span></span>
+                    <sc-if value="{{ o.hasTag }}"><span style="font-size:11px; font-weight:600; padding:2px 8px; border-radius:10px; background:var(--accent-soft); color:var(--accent-tx); flex:none">{{ o.tag }}</span></sc-if>
+                  </button>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+        <sc-if value="{{ hasFiles }}">
+          <footer style="flex:none; display:flex; align-items:center; gap:10px; padding:12px 24px; background:var(--panel); border-top:1px solid var(--div); flex-wrap:wrap">
+            <span style="flex:1; min-width:160px; font-size:13px; color:var(--tx2)">{{ finishHint }}</span>
+            <button onClick="{{ cancelImport }}" style="height:38px; padding:0 16px; border-radius:19px; font-size:14px; color:var(--accent-tx); font-weight:500" style-hover="background:var(--press)">Cancelar</button>
+            <button onClick="{{ finish }}" style="height:38px; padding:0 20px; border-radius:19px; font-size:14px; font-weight:500; background:{{ finishBg }}; color:{{ finishFg }}; cursor:{{ finishCursor }}">Concluir</button>
+          </footer>
+        </sc-if>
+      </div>
+    </sc-if>
+    <sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
+      <div style="flex:1; min-height:0; display:flex; flex-direction:column">
+        <header style="height:60px; flex:none; display:flex; align-items:center; gap:10px; padding:0 16px 0 10px; background:var(--head)">
+          <button onClick="{{ closePage }}" title="Fechar (Esc)" style="width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--tx2); flex:none" style-hover="background:var(--press)"><svg width="22" height="22" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg></button>
+          <div style="flex:1; min-width:0; font-size:16px; color:var(--tx)">Configurações</div>
+          <sc-if value="{{ saved }}"><span style="display:flex; align-items:center; gap:5px; font-size:13px; color:var(--accent-tx)"><svg width="16" height="16" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>Salvo</span></sc-if>
+        </header>
+        <div style="flex:1; min-height:0; overflow-y:auto">
+          <div style="max-width:680px; margin:0 auto; padding:24px; display:flex; flex-direction:column; gap:16px">
+            <div style="background:var(--panel); border:1px solid var(--div); border-radius:12px; padding:18px 20px; display:flex; flex-direction:column; gap:12px">
+              <div>
+                <div style="font-size:15px; font-weight:500; color:var(--tx)">Seu nome nos arquivos</div>
+                <div style="font-size:13px; color:var(--tx2); margin-top:4px; line-height:18px; text-wrap:pretty">Mensagens enviadas com estes nomes aparecem à direita. Use mais de um se você mudou de nome ou de conta.</div>
+              </div>
+              <div style="display:flex; flex-wrap:wrap; gap:8px">
+                <sc-for list="{{ names }}" as="n">
+                  <span style="display:flex; align-items:center; gap:4px; height:32px; padding:0 5px 0 12px; border-radius:16px; background:var(--accent-soft); color:var(--accent-tx); font-size:13px; font-weight:500">{{ n.n }}<button onClick="{{ n.onRemove }}" title="Remover" style="width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--accent-tx)" style-hover="background:var(--press)"><svg width="13" height="13" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2.4; stroke-linecap:round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></span>
+                </sc-for>
+                <sc-if value="{{ noNames }}"><span style="font-size:13px; color:var(--tx2); padding:6px 0">Nenhum nome definido. Todas as mensagens vão aparecer à esquerda.</span></sc-if>
+              </div>
+              <div style="display:flex; gap:8px">
+                <input value="{{ newName }}" onChange="{{ onNewName }}" onKeyDown="{{ onNameKey }}" placeholder="Adicionar outro nome" style="flex:1; min-width:0; height:38px; padding:0 12px; border-radius:8px; border:1px solid var(--div2); background:var(--panel); outline:0; font-size:14px; color:var(--tx); box-sizing:border-box">
+                <button onClick="{{ addName }}" style="height:38px; padding:0 16px; border-radius:19px; border:1px solid var(--div2); font-size:14px; font-weight:500; color:var(--accent-tx); flex:none" style-hover="background:var(--press)">Adicionar</button>
+              </div>
+            </div>
+            <div style="background:var(--panel); border:1px solid var(--div); border-radius:12px; padding:18px 20px; display:flex; align-items:center; gap:16px; flex-wrap:wrap">
+              <div style="flex:1; min-width:200px">
+                <div style="font-size:15px; font-weight:500; color:var(--tx)">Tema</div>
+                <div style="font-size:13px; color:var(--tx2); margin-top:4px; line-height:18px">A troca é imediata e fica lembrada neste computador.</div>
+              </div>
+              <div style="display:flex; background:var(--head); border-radius:10px; padding:3px; gap:3px">
+                <button onClick="{{ setLight }}" style="height:34px; padding:0 14px; border-radius:8px; display:flex; align-items:center; gap:7px; font-size:14px; background:{{ lightBg }}; color:{{ lightFg }}; box-shadow:{{ lightSh }}"><svg width="16" height="16" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"></path></svg>Claro</button>
+                <button onClick="{{ setDark }}" style="height:34px; padding:0 14px; border-radius:8px; display:flex; align-items:center; gap:7px; font-size:14px; background:{{ darkBg }}; color:{{ darkFg }}; box-shadow:{{ darkSh }}"><svg width="16" height="16" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round"><path d="M19.5 14.2A7.5 7.5 0 0 1 9.8 4.5a7.5 7.5 0 1 0 9.7 9.7z"></path></svg>Escuro</button>
+              </div>
+            </div>
+            <div style="background:var(--panel); border:1px solid var(--div); border-radius:12px; padding:18px 20px; display:flex; flex-direction:column; gap:12px">
+              <div>
+                <div style="font-size:15px; font-weight:500; color:var(--tx)">Local de armazenamento</div>
+                <div style="font-size:13px; color:var(--tx2); margin-top:4px; line-height:18px">Conversas e anexos ficam nesta pasta. Nada é enviado para a internet.</div>
+              </div>
+              <div style="display:flex; gap:8px; align-items:center">
+                <div style="flex:1; min-width:0; height:38px; display:flex; align-items:center; gap:8px; padding:0 12px; border-radius:8px; background:var(--head); color:var(--tx2); box-sizing:border-box">
+                  <svg width="16" height="16" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:1.9; stroke-linejoin:round; flex:none"><path d="M3.5 7.5a2 2 0 0 1 2-2h4l2 2h7a2 2 0 0 1 2 2v7.5a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"></path></svg>
+                  <span style="font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:12.5px; color:var(--tx); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ path }}</span>
+                </div>
+                <button onClick="{{ changePath }}" style="height:38px; padding:0 16px; border-radius:19px; border:1px solid var(--div2); font-size:14px; font-weight:500; color:var(--accent-tx); flex:none" style-hover="background:var(--press)">Alterar…</button>
+              </div>
+              <div style="font-size:12px; color:var(--tx2)">{{ storageInfo }}</div>
+            </div>
+            <div style="background:var(--panel); border:1px solid var(--div); border-radius:12px; padding:18px 20px; display:flex; flex-direction:column; gap:12px">
+              <div>
+                <div style="font-size:15px; font-weight:500; color:var(--tx)">Backup</div>
+                <div style="font-size:13px; color:var(--tx2); margin-top:4px; line-height:18px">Gera um arquivo .zip com todo o acervo para guardar em outro lugar.</div>
+              </div>
+              <sc-if value="{{ backupIdle }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap">
+                  <span style="flex:1; min-width:180px; font-size:13px; color:var(--tx2)">Último backup: {{ lastBackup }}</span>
+                  <button onClick="{{ doBackup }}" style="height:38px; padding:0 18px; border-radius:19px; background:var(--btn); color:var(--btn-tx); font-size:14px; font-weight:500; display:flex; align-items:center; gap:7px"><svg width="17" height="17" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round"><path d="M12 4v11M7.5 10.5L12 15l4.5-4.5"></path><path d="M5 20h14"></path></svg>Fazer backup agora</button>
+                </div>
+              </sc-if>
+              <sc-if value="{{ backupRunning }}">
+                <div style="display:flex; flex-direction:column; gap:8px">
+                  <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--tx2)"><span>Gerando backup…</span><span>{{ backupPct }}</span></div>
+                  <div style="height:6px; border-radius:3px; background:var(--track); overflow:hidden"><div style="height:100%; width:{{ backupPct }}; background:var(--accent); transition:width .1s linear"></div></div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ backupDone }}">
+                <div style="display:flex; align-items:center; gap:10px; background:var(--ok-bg); color:var(--ok-tx); border-radius:8px; padding:10px 12px; font-size:13px; line-height:18px; flex-wrap:wrap">
+                  <svg width="18" height="18" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; flex:none"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+                  <span style="flex:1; min-width:180px">Backup concluído: {{ backupFile }}</span>
+                  <button onClick="{{ doBackup }}" style="font-size:13px; font-weight:600; color:var(--ok-tx); text-decoration:underline">Fazer outro</button>
+                </div>
+              </sc-if>
+            </div>
+            <div style="background:var(--panel); border:1px solid var(--div); border-radius:12px; padding:18px 20px; display:flex; flex-direction:column; gap:12px">
+              <div style="display:flex; align-items:center; gap:16px">
+                <div style="flex:1; min-width:0">
+                  <div style="font-size:15px; font-weight:500; color:var(--tx)">Senha (opcional)</div>
+                  <div style="font-size:13px; color:var(--tx2); margin-top:4px; line-height:18px">Pede uma senha sempre que o ZapVault for aberto.</div>
+                </div>
+                <button onClick="{{ togglePwd }}" title="Ativar ou desativar senha" style="width:42px; height:24px; border-radius:12px; background:{{ pwdTrack }}; position:relative; flex:none; transition:background .15s"><span style="position:absolute; top:3px; left:{{ pwdKnob }}; width:18px; height:18px; border-radius:50%; background:#fff; box-shadow:0 1px 2px rgba(0,0,0,.3); transition:left .15s"></span></button>
+              </div>
+              <sc-if value="{{ pwdForm }}">
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:8px">
+                  <input type="password" value="{{ pwd1 }}" onChange="{{ onPwd1 }}" placeholder="Nova senha" style="height:38px; padding:0 12px; border-radius:8px; border:1px solid var(--div2); background:var(--panel); outline:0; font-size:14px; color:var(--tx); box-sizing:border-box; min-width:0">
+                  <input type="password" value="{{ pwd2 }}" onChange="{{ onPwd2 }}" placeholder="Repita a senha" style="height:38px; padding:0 12px; border-radius:8px; border:1px solid var(--div2); background:var(--panel); outline:0; font-size:14px; color:var(--tx); box-sizing:border-box; min-width:0">
+                </div>
+                <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap">
+                  <span style="flex:1; min-width:160px; font-size:13px; color:var(--err-tx)">{{ pwdErr }}</span>
+                  <button onClick="{{ savePwd }}" style="height:38px; padding:0 18px; border-radius:19px; background:var(--btn); color:var(--btn-tx); font-size:14px; font-weight:500">Ativar senha</button>
+                </div>
+              </sc-if>
+              <sc-if value="{{ pwdActive }}">
+                <div style="display:flex; align-items:center; gap:10px; background:var(--ok-bg); color:var(--ok-tx); border-radius:8px; padding:10px 12px; font-size:13px">
+                  <svg width="16" height="16" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2.2; stroke-linecap:round; flex:none"><rect x="5" y="10.5" width="14" height="9.5" rx="2"></rect><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"></path></svg>
+                  <span style="flex:1">Senha ativada</span>
+                  <button onClick="{{ changePwd }}" style="font-size:13px; font-weight:600; color:var(--ok-tx); text-decoration:underline">Alterar senha</button>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </main>
+  <sc-if value="{{ viewerOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; inset:0; z-index:50; background:var(--viewer); display:flex; flex-direction:column; color:var(--tx)">
+      <div style="height:60px; flex:none; display:flex; align-items:center; gap:12px; padding:0 12px 0 16px">
+        <div style="width:40px; height:40px; border-radius:50%; flex:none; background:{{ vAvBg }}; color:#fff; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:500">{{ vInitials }}</div>
+        <div style="flex:1; min-width:0">
+          <div style="font-size:15px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ vWho }}</div>
+          <div style="font-size:13px; color:var(--tx2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ vDate }} · {{ vFile }}</div>
+        </div>
+        <button onClick="{{ vDownload }}" title="Baixar" style="height:38px; padding:0 14px 0 10px; border-radius:19px; display:flex; align-items:center; gap:6px; color:var(--tx); font-size:14px; flex:none" style-hover="background:var(--press)"><svg width="20" height="20" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round"><path d="M12 4v11M7.5 10.5L12 15l4.5-4.5"></path><path d="M5 20h14"></path></svg><span>Baixar</span></button>
+        <button onClick="{{ vClose }}" title="Fechar (Esc)" style="width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--tx); flex:none" style-hover="background:var(--press)"><svg width="22" height="22" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+      </div>
+      <div style="flex:1; min-height:0; position:relative; display:flex; align-items:center; justify-content:center; padding:0 16px">
+        <button onClick="{{ vPrev }}" title="Anterior (←)" style="position:absolute; left:20px; top:50%; transform:translateY(-50%); width:48px; height:48px; border-radius:50%; background:var(--panel); color:var(--tx); box-shadow:var(--pop); display:flex; align-items:center; justify-content:center; opacity:{{ vPrevOp }}; cursor:{{ vPrevCur }}; z-index:2"><svg width="22" height="22" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round"><path d="M15 6l-6 6 6 6"></path></svg></button>
+        <div style="width:{{ vW }}; aspect-ratio:{{ vRatio }}; background:{{ vPh }}; border-radius:4px; position:relative; overflow:hidden; box-shadow:0 8px 40px rgba(0,0,0,.25)">
+          <span style="position:absolute; left:12px; top:12px; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:12px; background:rgba(255,255,255,.8); color:#26343C; padding:3px 8px; border-radius:4px">{{ vFile }}</span>
+          <sc-if value="{{ vIsVideo }}">
+            <button onClick="{{ vToggle }}" title="Tocar ou pausar" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:68px; height:68px; border-radius:50%; background:rgba(11,20,26,.55); color:#fff; display:flex; align-items:center; justify-content:center">
+              <sc-if value="{{ vPlaying }}"><svg width="28" height="28" viewBox="0 0 24 24" style="fill:currentColor"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"></path></svg></sc-if>
+              <sc-if value="{{ vPaused }}"><svg width="28" height="28" viewBox="0 0 24 24" style="fill:currentColor; margin-left:3px"><path d="M8 5.5v13l10.5-6.5z"></path></svg></sc-if>
+            </button>
+            <div style="position:absolute; left:0; right:0; bottom:0; padding:12px 14px; display:flex; align-items:center; gap:12px; background:linear-gradient(transparent, rgba(0,0,0,.55)); color:#fff; font-size:12px">
+              <div style="flex:1; height:4px; border-radius:2px; background:rgba(255,255,255,.35); position:relative"><div style="position:absolute; left:0; top:0; bottom:0; width:{{ vPct }}; background:#fff; border-radius:2px"></div></div>
+              <span style="white-space:nowrap">{{ vTime }}</span>
+            </div>
+          </sc-if>
+        </div>
+        <button onClick="{{ vNext }}" title="Próxima (→)" style="position:absolute; right:20px; top:50%; transform:translateY(-50%); width:48px; height:48px; border-radius:50%; background:var(--panel); color:var(--tx); box-shadow:var(--pop); display:flex; align-items:center; justify-content:center; opacity:{{ vNextOp }}; cursor:{{ vNextCur }}; z-index:2"><svg width="22" height="22" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round"><path d="M9 6l6 6-6 6"></path></svg></button>
+      </div>
+      <div style="flex:none; padding:14px 16px 20px; display:flex; flex-direction:column; gap:4px; align-items:center; text-align:center">
+        <sc-if value="{{ vHasCap }}"><div style="font-size:14px; color:var(--tx); max-width:600px">{{ vCaption }}</div></sc-if>
+        <div style="font-size:12px; color:var(--tx2)">{{ vCount }} · setas do teclado trocam a imagem · Esc fecha</div>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ docOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; inset:0; z-index:50; background:var(--viewer); display:flex; flex-direction:column; color:var(--tx)">
+      <div style="height:60px; flex:none; display:flex; align-items:center; gap:12px; padding:0 12px 0 16px">
+        <div style="width:30px; height:38px; flex:none; border-radius:4px; background:{{ dExtBg }}; color:#fff; font-size:9px; font-weight:700; display:flex; align-items:flex-end; justify-content:center; padding-bottom:5px; box-sizing:border-box">{{ dExt }}</div>
+        <div style="flex:1; min-width:0">
+          <div style="font-size:15px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ dName }}</div>
+          <div style="font-size:13px; color:var(--tx2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ dMeta }}</div>
+        </div>
+        <button onClick="{{ dDownload }}" title="Baixar" style="height:38px; padding:0 14px 0 10px; border-radius:19px; display:flex; align-items:center; gap:6px; color:var(--tx); font-size:14px; flex:none" style-hover="background:var(--press)"><svg width="20" height="20" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round"><path d="M12 4v11M7.5 10.5L12 15l4.5-4.5"></path><path d="M5 20h14"></path></svg><span>Baixar</span></button>
+        <button onClick="{{ dClose }}" title="Fechar (Esc)" style="width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--tx); flex:none" style-hover="background:var(--press)"><svg width="22" height="22" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+      </div>
+      <div style="flex:1; min-height:0; overflow-y:auto; padding:8px 16px 40px; display:flex; flex-direction:column; align-items:center; gap:16px">
+        <sc-for list="{{ dPages }}" as="p">
+          <div style="width:min(560px, 100%); aspect-ratio:1/1.414; flex:none; background:#fff; color:#1D2730; border-radius:3px; box-shadow:0 4px 24px rgba(0,0,0,.18); padding:7% 8%; box-sizing:border-box; display:flex; flex-direction:column; gap:12px">
+            <sc-if value="{{ p.isFirst }}">
+              <div style="font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:#5F6E78">Documento PDF</div>
+              <div style="font-size:24px; font-weight:600">{{ dTitle }}</div>
+              <div style="font-size:12px; color:#5F6E78">{{ dTo }}</div>
+              <div style="height:1px; background:#E3E7EA; margin:6px 0"></div>
+            </sc-if>
+            <sc-for list="{{ p.bars }}" as="b"><div style="height:8px; border-radius:4px; background:#E6EAED; width:{{ b.w }}; flex:none"></div></sc-for>
+            <div style="margin-top:auto; font-size:10px; color:#7D8A93; text-align:right">{{ p.label }}</div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ dHasMore }}"><div style="font-size:13px; color:var(--tx2)">{{ dMore }}</div></sc-if>
+        <sc-if value="{{ dNoPreview }}">
+          <div style="margin-top:12vh; text-align:center; display:flex; flex-direction:column; align-items:center; gap:10px; max-width:320px">
+            <div style="width:64px; height:80px; border-radius:6px; background:{{ dExtBg }}; color:#fff; font-size:13px; font-weight:700; display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px; box-sizing:border-box">{{ dExt }}</div>
+            <div style="font-size:15px; margin-top:6px">Pré-visualização indisponível</div>
+            <div style="font-size:13px; color:var(--tx2); line-height:18px">Arquivos {{ dExtLower }} não podem ser exibidos aqui. Baixe para abrir no programa adequado.</div>
+            <button onClick="{{ dDownload }}" style="margin-top:6px; height:38px; padding:0 18px; border-radius:19px; background:var(--btn); color:var(--btn-tx); font-size:14px; font-weight:500">Baixar arquivo</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; left:50%; bottom:28px; transform:translateX(-50%); z-index:60; background:var(--tx); color:var(--panel); padding:10px 18px; border-radius:8px; font-size:14px; box-shadow:var(--pop); animation:zvUp .2s ease-out; max-width:calc(100vw - 32px); text-align:center">{{ toast }}</div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;estado&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Normal&quot;,&quot;Acervo carregando&quot;,&quot;Acervo vazio&quot;,&quot;Conversa sem mensagens&quot;,&quot;Mídia carregando&quot;,&quot;Mídia com erro&quot;],&quot;default&quot;:&quot;Normal&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Demonstração de estados&quot;},&quot;telaInicial&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Conversa aberta&quot;,&quot;Tela principal&quot;],&quot;default&quot;:&quot;Conversa aberta&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Demonstração de estados&quot;}}">
+class Component extends DCLogic {
+  searchRef = React.createRef();
+  msgRef = React.createRef();
+  inRef = React.createRef();
+  Z = null;
+  isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/i.test(navigator.platform || navigator.userAgent || '');
+  state = {
+    theme: this.loadTheme(), booting: true, chats: [],
+    narrow: typeof window !== 'undefined' && window.innerWidth < 760,
+    activeId: null, rightMode: 'empty', q: '', tab: 'chats', tabPinned: false, searching: false, lastResult: null,
+    loaded: {}, loadingOlder: false, flashId: null, mediaLoading: false, retry: {},
+    inOpen: false, inQ: '', inIdx: 0, datePop: false, showJump: false, below: 0,
+    viewer: null, docView: null, audio: null, speeds: {}, toast: null,
+    imp: { dragging: false, files: [], name: 0 },
+    set: { names: ['Moura Consultoria'], newName: '', path: 'C:\\Usuários\\Rafael\\Documentos\\ZapVault', backup: 'idle', backupPct: 0, backupFile: '', lastBackup: '12/10/2026 às 18:04', pwdOn: false, pwd1: '', pwd2: '', pwdSet: false, pwdErr: '', saved: false },
+  };
+
+  loadTheme() { try { return localStorage.getItem('zv-theme') || 'light'; } catch (e) { return 'light'; } }
+  applyTheme() { document.documentElement.setAttribute('data-zv-theme', this.state.theme); }
+  setTheme(t, saved) {
+    this.setState({ theme: t }, () => this.applyTheme());
+    try { localStorage.setItem('zv-theme', t); } catch (e) {}
+    if (saved) this.setSet({}, true);
+  }
+  estado() { return this.props.estado ?? 'Normal'; }
+
+  componentDidMount() {
+    this.applyTheme();
+    if ((window.innerWidth < 760) !== this.state.narrow) this.setState({ narrow: window.innerWidth < 760 });
+    const t0 = Date.now();
+    import('./zapvault-data.js').then(Z => {
+      this.Z = Z;
+      const wait = Math.max(0, 1000 - (Date.now() - t0));
+      this.bootT = setTimeout(() => {
+        const narrowNow = window.innerWidth < 760;
+        this.setState({ chats: Z.seed(), booting: false, narrow: narrowNow }, () => {
+          const e = this.estado();
+          if ((this.props.telaInicial ?? 'Conversa aberta') === 'Conversa aberta' && !narrowNow && e !== 'Acervo vazio' && e !== 'Acervo carregando') this.openChat('maria');
+        });
+      }, wait);
+    });
+    this.onKey = e => this.handleKey(e);
+    window.addEventListener('keydown', this.onKey);
+    this.onResize = () => { const n = window.innerWidth < 760; if (n !== this.state.narrow) this.setState({ narrow: n }); };
+    window.addEventListener('resize', this.onResize);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.onKey);
+    window.removeEventListener('resize', this.onResize);
+    [this.bootT, this.qT, this.flashT, this.mediaT, this.olderT, this.toastT, this.savedT].forEach(clearTimeout);
+    [this.tick, this.procT, this.bkT].forEach(clearInterval);
+  }
+
+  handleKey(e) {
+    const k = e.key, s = this.state;
+    if ((e.ctrlKey || e.metaKey) && (k === 'k' || k === 'K')) { e.preventDefault(); this.focusSearch(); return; }
+    if (s.viewer) {
+      if (k === 'Escape') this.closeViewer();
+      else if (k === 'ArrowLeft') this.viewerStep(-1);
+      else if (k === 'ArrowRight') this.viewerStep(1);
+      return;
+    }
+    if (s.docView) { if (k === 'Escape') this.setState({ docView: null }); return; }
+    if (k !== 'Escape') return;
+    if (s.datePop) return this.setState({ datePop: false });
+    if (s.inOpen) return this.closeIn();
+    if (s.q) return this.setState({ q: '', tabPinned: false, searching: false });
+    if (s.rightMode === 'import' || s.rightMode === 'settings') this.closePage();
+  }
+  focusSearch() {
+    const f = () => { const el = this.searchRef.current; if (el) { el.focus(); el.select(); } };
+    if (this.state.narrow && this.state.rightMode !== 'empty') this.setState({ rightMode: 'empty', viewer: null, docView: null }, f);
+    else this.setState({ viewer: null, docView: null }, f);
+  }
+  showToast(text) {
+    clearTimeout(this.toastT);
+    this.setState({ toast: { text, id: Date.now() } });
+    this.toastT = setTimeout(() => this.setState({ toast: null }), 2600);
+  }
+  closePage() {
+    const s = this.state;
+    if (s.activeId && this.findChat(s.activeId)) this.setState({ rightMode: 'chat' }, () => this.scrollBottom());
+    else this.setState({ rightMode: 'empty' });
+  }
+
+  findChat(id) { return this.state.chats.find(c => c.id === id); }
+  listChats() {
+    if (this.estado() === 'Acervo vazio') return [];
+    const key = c => { const m = c.msgs[c.msgs.length - 1]; return m ? m.d + (m.t || '00:00') : ''; };
+    return [...this.state.chats].sort((a, b) => key(b).localeCompare(key(a)));
+  }
+  maxBatch(c) { return c.msgs.reduce((n, m) => Math.max(n, m.batch), 0); }
+  msgSummary(m) {
+    const Z = this.Z;
+    switch (m.k) {
+      case 'text': return m.text.replace(/\n+/g, ' ');
+      case 'image': return m.caption ? 'Foto: ' + m.caption : 'Foto';
+      case 'video': return m.caption ? 'Vídeo: ' + m.caption : 'Vídeo';
+      case 'audio': return 'Áudio (' + Z.dur(m.dur) + ')';
+      case 'doc': return m.file;
+      case 'sticker': return 'Figurinha';
+      case 'missing': return 'Mídia não incluída';
+      case 'deleted': return 'Mensagem apagada';
+      default: return m.text || '';
+    }
+  }
+  previewOf(c) {
+    const m = [...c.msgs].reverse().find(x => x.w !== 's') || c.msgs[c.msgs.length - 1];
+    if (!m) return 'Nenhuma mensagem';
+    let t = this.msgSummary(m);
+    if (c.group && m.w !== 's') t = (m.w === 'me' ? 'Você' : c.parts[m.w].split(' ')[0]) + ': ' + t;
+    return t;
+  }
+  listItem(c) {
+    const s = this.state, Z = this.Z, last = c.msgs[c.msgs.length - 1], isNum = /^\+/.test(c.name);
+    return {
+      key: c.id, name: c.name, initials: Z.initials(c.name), isNum, notNum: !isNum, avBg: Z.AV[c.av % 8],
+      preview: this.previewOf(c), date: last ? Z.listDate(last) : '',
+      bg: s.activeId === c.id && s.rightMode === 'chat' ? 'var(--sel)' : 'transparent',
+      onClick: () => this.openChat(c.id),
+    };
+  }
+
+  onQ = e => {
+    const v = e.target.value;
+    this.setState({ q: v, searching: v.trim().length >= 2, tabPinned: v ? this.state.tabPinned : false });
+    clearTimeout(this.qT);
+    this.qT = setTimeout(() => this.setState({ searching: false }), 280);
+  };
+  searchVals(chats, q) {
+    const Z = this.Z, s = this.state;
+    const conv = chats.filter(c => Z.ranges(c.name, q).length);
+    const msgs = [];
+    chats.forEach(c => c.msgs.forEach(m => {
+      const f = Z.searchField(m);
+      if (!f) return;
+      const rs = Z.ranges(m[f], q);
+      if (rs.length) msgs.push({ c, m, f, rs });
+    }));
+    msgs.sort((a, b) => (b.m.d + b.m.t).localeCompare(a.m.d + a.m.t));
+    const tab = s.tabPinned ? s.tab : (conv.length ? 'chats' : 'msgs');
+    const ready = !s.searching, none = !conv.length && !msgs.length;
+    const nConv = new Set(msgs.map(r => r.c.id)).size;
+    const pl = (n, a, b) => n + ' ' + (n === 1 ? a : b);
+    return {
+      convCount: conv.length, msgCount: msgs.length, searching: s.searching,
+      tabChats: () => this.setState({ tab: 'chats', tabPinned: true }), tabMsgs: () => this.setState({ tab: 'msgs', tabPinned: true }),
+      tabChatsColor: tab === 'chats' ? 'var(--accent-tx)' : 'var(--tx2)', tabChatsLine: tab === 'chats' ? 'var(--accent)' : 'transparent',
+      tabMsgsColor: tab === 'msgs' ? 'var(--accent-tx)' : 'var(--tx2)', tabMsgsLine: tab === 'msgs' ? 'var(--accent)' : 'transparent',
+      showConvTab: ready && tab === 'chats', showMsgTab: ready && tab === 'msgs',
+      convResults: conv.map(c => Object.assign(this.listItem(c), { nameSegs: Z.segs(c.name, Z.ranges(c.name, q)) })),
+      msgResults: msgs.map(r => this.msgResult(r)),
+      convNone: !conv.length, msgNone: !msgs.length, msgSome: msgs.length > 0,
+      msgSummary: pl(msgs.length, 'mensagem', 'mensagens') + ' em ' + pl(nConv, 'conversa', 'conversas'),
+      convNoneText: none ? `Nenhum resultado para “${q}”` : `Nenhuma conversa com “${q}” no nome`,
+      convNoneSub: none ? 'Confira a grafia ou tente outra palavra. A busca ignora maiúsculas e acentos.' : `Veja a aba Mensagens: ${pl(msgs.length, 'mensagem contém', 'mensagens contêm')} esse termo.`,
+      msgNoneText: none ? `Nenhum resultado para “${q}”` : `Nenhuma mensagem com “${q}”`,
+      msgNoneSub: none ? 'Confira a grafia ou tente outra palavra. A busca ignora maiúsculas e acentos.' : `O termo aparece no nome de ${pl(conv.length, 'conversa', 'conversas')}. Veja a aba Conversas.`,
+    };
+  }
+  msgResult({ c, m, f, rs }) {
+    const Z = this.Z;
+    const text = m[f].replace(/\n/g, ' ');
+    let start = 0;
+    const s0 = rs[0][0];
+    if (s0 > 38) { const sp = text.lastIndexOf(' ', s0 - 24); start = sp < 0 ? s0 - 24 : sp + 1; }
+    const sg = Z.segs(text.slice(start), rs.map(([a, b]) => [a - start, b - start, false]).filter(r => r[0] >= 0));
+    if (start > 0) sg.unshift({ t: '…', bg: 'transparent', fg: 'inherit' });
+    const who = m.w === 'me' ? 'Você' : c.group ? c.parts[m.w].split(' ')[0] : '';
+    const kind = f === 'file' ? 'Documento: ' : f === 'caption' ? (m.k === 'video' ? 'Vídeo: ' : 'Foto: ') : '';
+    return {
+      key: m.id, name: c.name, date: Z.fmt(m.d), prefix: (who ? who + ': ' : '') + kind, segs: sg,
+      bg: this.state.lastResult === m.id && this.state.rightMode === 'chat' ? 'var(--sel)' : 'transparent',
+      onClick: () => { this.setState({ lastResult: m.id }); this.openChat(c.id, { mid: m.id }); },
+    };
+  }
+
+  periodAll(chats) {
+    const Z = this.Z;
+    if (!Z || !chats.length) return '';
+    let a = '9', b = '0';
+    chats.forEach(c => { if (c.msgs.length) { if (c.msgs[0].d < a) a = c.msgs[0].d; const l = c.msgs[c.msgs.length - 1].d; if (l > b) b = l; } });
+    return `Mensagens de ${Z.fmt(a)} a ${Z.fmt(b)}`;
+  }
+
+  openChat(id, opt = {}) {
+    const c = this.findChat(id);
+    if (!c) return;
+    const mid = opt.mid || null;
+    const m = mid ? c.msgs.find(x => x.id === mid) : null;
+    const maxB = this.maxBatch(c);
+    this.stopTick();
+    [this.flashT, this.mediaT, this.olderT].forEach(clearTimeout);
+    this.setState(s => ({
+      activeId: id, rightMode: 'chat', inOpen: false, inQ: '', inIdx: 0, datePop: false, audio: null, flashId: mid,
+      mediaLoading: true, loadingOlder: false, showJump: false, below: 0,
+      loaded: m && m.batch > (s.loaded[id] || 0) ? Object.assign({}, s.loaded, { [id]: maxB }) : s.loaded,
+    }), () => { if (mid) this.scrollToMid(mid, false); else this.scrollBottom(); this.updateJump(); });
+    if (mid) this.flashT = setTimeout(() => this.setState({ flashId: null }), 2200);
+    this.mediaT = setTimeout(() => this.setState({ mediaLoading: false }), 650);
+  }
+  scrollBottom(smooth) {
+    const el = this.msgRef.current;
+    if (el) el.scrollTo({ top: el.scrollHeight, behavior: smooth ? 'smooth' : 'auto' });
+  }
+  scrollToMid(mid, smooth) {
+    const el = this.msgRef.current;
+    if (!el) return;
+    const t = el.querySelector('[data-mid="' + mid + '"]');
+    if (!t) return;
+    el.scrollTo({ top: Math.max(0, t.offsetTop - el.clientHeight / 2 + t.offsetHeight / 2), behavior: smooth ? 'smooth' : 'auto' });
+  }
+  stopTick() { clearInterval(this.tick); this.tick = null; }
+  setSet(patch, saved) {
+    this.setState(s => ({ set: Object.assign({}, s.set, patch, saved ? { saved: true } : {}) }));
+    if (saved) { clearTimeout(this.savedT); this.savedT = setTimeout(() => this.setState(s => ({ set: Object.assign({}, s.set, { saved: false }) })), 1800); }
+  }
+  setImp(patch) { this.setState(s => ({ imp: Object.assign({}, s.imp, patch) })); }
+  extraVals(estado, chats, allMsgs) {
+    const s = this.state, v = {};
+    if (s.rightMode === 'chat') Object.assign(v, this.chatVals(estado, chats));
+    if (s.viewer) Object.assign(v, this.viewerVals());
+    if (s.docView) Object.assign(v, this.docVals());
+    if (s.rightMode === 'import' && this.importVals) Object.assign(v, this.importVals());
+    if (s.rightMode === 'settings' && this.settingsVals) Object.assign(v, this.settingsVals(allMsgs, chats));
+    return v;
+  }
+
+  chatVals(estado, chats) {
+    const s = this.state, Z = this.Z;
+    const c = this.findChat(s.activeId);
+    if (!c || !chats.length) return { isChat: false, isWelcome: true };
+    const empty = estado === 'Conversa sem mensagens';
+    const occ = s.inOpen && !empty ? this.inOccur() : [];
+    const idx = occ.length ? Math.min(s.inIdx, occ.length - 1) : -1;
+    occ.forEach((o, i) => { o.cur = i === idx; });
+    const isNum = /^\+/.test(c.name);
+    const ns = c.msgs.filter(m => m.w !== 's');
+    const first = c.msgs[0], last = c.msgs[c.msgs.length - 1];
+    const period = first ? (first.d === last.d ? Z.fmt(first.d) : `${Z.fmt(first.d)} – ${Z.fmt(last.d)}`) : '';
+    const cSub = empty ? 'Sem mensagens' : `${period} · ${ns.length} ${ns.length === 1 ? 'mensagem' : 'mensagens'}` + (c.group ? ` · ${c.parts.length + 1} participantes` : '');
+    const dayMap = {};
+    c.msgs.forEach(m => { if (m.w !== 's') dayMap[m.d] = (dayMap[m.d] || 0) + 1; else if (!dayMap[m.d]) dayMap[m.d] = 0; });
+    const days = Object.keys(dayMap).sort().map(d => ({ key: d, label: Z.fmt(d), wd: Z.weekday(d), count: dayMap[d] + (dayMap[d] === 1 ? ' mensagem' : ' mensagens'), onClick: () => this.jumpDay(d) }));
+    const q2 = s.inQ.trim().length >= 2;
+    return {
+      cName: c.name, cInitials: Z.initials(c.name), cIsNum: isNum, cNotNum: !isNum, cAvBg: Z.AV[c.av % 8], cSub,
+      backToList: () => this.setState({ rightMode: 'empty', inOpen: false, datePop: false }),
+      toggleDate: () => this.setState(st => ({ datePop: !st.datePop })), datePop: s.datePop && !empty, days,
+      dateBtnBg: s.datePop ? 'var(--press)' : 'transparent', inBtnBg: s.inOpen ? 'var(--press)' : 'transparent',
+      openIn: this.openIn, inOpen: s.inOpen, inQ: s.inQ, onInQ: this.onInQ, onInKey: this.onInKey, closeIn: this.closeIn,
+      inPrev: () => this.inStep(-1), inNext: () => this.inStep(1),
+      inCounter: !q2 ? '' : occ.length ? `${idx + 1} de ${occ.length}` : 'Sem ocorrências',
+      inCounterColor: occ.length || !q2 ? 'var(--tx2)' : 'var(--err-tx)', inNavOp: occ.length ? '1' : '.35',
+      rows: empty ? [] : this.buildRows(c, estado, occ), chatEmpty: empty, onMsgScroll: this.onMsgScroll,
+      showJump: s.showJump && !empty, hasBelow: s.below > 0, below: s.below > 99 ? '99+' : String(s.below),
+      jumpBottom: () => this.scrollBottom(true), footFile: c.file,
+    };
+  }
+
+  buildRows(c, estado, occ) {
+    const s = this.state, Z = this.Z, rows = [];
+    const maxB = this.maxBatch(c), loaded = s.loaded[c.id] || 0;
+    if (loaded < maxB) rows.push(s.loadingOlder ? { key: 'ld', isLoading: true } : { key: 'more', isMore: true, onMore: () => this.loadOlder() });
+    else rows.push({ key: 'start', isStart: true });
+    const mediaLoad = s.mediaLoading || estado === 'Mídia carregando';
+    const mediaErr = estado === 'Mídia com erro';
+    const W = { '4/3': '300px', '3/4': '210px', '16/9': '330px', '1/1': '260px' };
+    const EXT = { PDF: '#D64545', XLSX: '#1E8A4C', ZIP: '#6B7780', CSV: '#127C8C' };
+    let lastDay = null, prev = null;
+    c.msgs.filter(m => m.batch <= loaded).forEach(m => {
+      if (m.d !== lastDay) { rows.push({ key: 'd' + m.id, isDay: true, day: m.d, label: Z.sepLabel(m.d) }); lastDay = m.d; prev = null; }
+      if (m.w === 's') {
+        rows.push({ key: m.id, isSys: true, text: m.text, lock: m.icon === 'lock', call: m.k === 'call', time: m.t || '', hasTime: !!m.t });
+        prev = null;
+        return;
+      }
+      const mine = m.w === 'me', first = !prev || prev.w !== m.w;
+      prev = m;
+      const hl = (field, text) => Z.segs(text, occ.filter(o => o.mid === m.id && o.field === field).map(o => [o.s, o.e, o.cur]));
+      const sticker = m.k === 'sticker', visual = m.k === 'image' || m.k === 'video';
+      const retry = s.retry[m.id];
+      const loading = (visual || sticker) && (mediaLoad || retry === 'loading');
+      const error = visual && !loading && (mediaErr || (m.broken && retry !== 'ok'));
+      const r = {
+        key: m.id, isMsg: true, mid: m.id, justify: mine ? 'flex-end' : 'flex-start', mt: first ? '10px' : '2px', time: m.t,
+        flashBg: s.flashId === m.id ? 'var(--flash)' : 'transparent',
+        bubbleBg: sticker ? 'transparent' : mine ? 'var(--out)' : 'var(--in)', shadow: sticker ? 'none' : 'var(--shadow)',
+        radius: first ? (mine ? '8px 2px 8px 8px' : '2px 8px 8px 8px') : '8px',
+        showSender: c.group && !mine && first && !sticker, sender: mine ? '' : c.parts[m.w],
+        senderColor: `var(--s${((typeof m.w === 'number' ? m.w : 0) * 3 + c.av) % 8})`,
+        senderPad: visual || m.k === 'doc' ? '2px 5px 4px' : '0 0 1px',
+        timeColor: mine ? 'var(--tx2-out)' : 'var(--tx2)', pad: '6px 8px 8px 9px',
+        timeNormal: !sticker && !(visual && !m.caption), timeOverlay: visual && !m.caption,
+      };
+      if (m.k === 'text') Object.assign(r, { isText: true, segs: hl('text', m.text) });
+      else if (visual) Object.assign(r, {
+        isVisual: true, pad: '3px', ph: Z.ph(m.hue), ratio: m.ratio, mw: W[m.ratio] || '300px', phLabel: m.file,
+        isVideoReady: m.k === 'video' && !loading && !error, durLabel: m.dur ? Z.dur(m.dur) : '',
+        loading, error, errText: m.k === 'video' ? 'Não foi possível abrir o vídeo' : 'Não foi possível abrir a imagem',
+        onRetry: e => { e.stopPropagation(); this.retryMedia(m.id); }, cursor: loading || error ? 'default' : 'pointer',
+        onOpen: () => { if (!loading && !error) this.openViewer(m.id); },
+        hasCap: !!m.caption, capSegs: m.caption ? hl('caption', m.caption) : [],
+      });
+      else if (m.k === 'audio') {
+        const a = s.audio && s.audio.id === m.id ? s.audio : null;
+        const pos = a ? a.pos : 0, sp = s.speeds[m.id] || 1, playing = !!(a && a.playing);
+        Object.assign(r, {
+          isAudio: true, pad: '7px 8px 4px 7px', playing, paused: !playing, playTitle: playing ? 'Pausar' : 'Tocar',
+          pct: Math.min(100, (pos / m.dur) * 100).toFixed(1) + '%',
+          audioTime: pos > 0 ? `${Z.dur(pos)} / ${Z.dur(m.dur)}` : Z.dur(m.dur),
+          speedLabel: sp === 1.5 ? '1,5x' : sp + 'x',
+          onToggle: () => this.toggleAudio(m.id, m.dur), onSpeed: () => this.cycleSpeed(m.id), onSeek: e => this.seekAudio(e, m.id, m.dur),
+        });
+      } else if (m.k === 'doc') Object.assign(r, {
+        isDoc: true, pad: '3px', ext: m.ext, extBg: EXT[m.ext] || '#6B7780', docSegs: hl('file', m.file),
+        docMeta: [m.pages ? `${m.pages} ${m.pages === 1 ? 'página' : 'páginas'}` : null, m.size, m.ext].filter(Boolean).join(' · '),
+        onOpen: () => this.setState({ docView: m.id }),
+        onDownload: e => { e.stopPropagation(); this.showToast('Download simulado: ' + m.file); },
+      });
+      else if (sticker) Object.assign(r, { isSticker: true, pad: '0', ph: Z.ph(m.hue) });
+      else if (m.k === 'missing') Object.assign(r, { isMissing: true });
+      else if (m.k === 'deleted') Object.assign(r, { isDeleted: true, delText: mine ? 'Você apagou esta mensagem' : 'Essa mensagem foi apagada' });
+      rows.push(r);
+    });
+    return rows;
+  }
+
+  onMsgScroll = () => {
+    const el = this.msgRef.current;
+    if (!el) return;
+    if (el.scrollTop < 40) this.loadOlder();
+    this.updateJump();
+  };
+  updateJump() {
+    const el = this.msgRef.current;
+    if (!el) return;
+    const show = el.scrollHeight - el.scrollTop - el.clientHeight > 320;
+    let below = 0;
+    if (show) { const lim = el.scrollTop + el.clientHeight; el.querySelectorAll('[data-mid]').forEach(n => { if (n.offsetTop > lim) below++; }); }
+    if (show !== this.state.showJump || below !== this.state.below) this.setState({ showJump: show, below });
+  }
+  loadOlder() {
+    const s = this.state, c = this.findChat(s.activeId);
+    if (!c || s.loadingOlder || this.estado() === 'Conversa sem mensagens') return;
+    const cur = s.loaded[c.id] || 0;
+    if (cur >= this.maxBatch(c)) return;
+    this.setState({ loadingOlder: true });
+    this.olderT = setTimeout(() => {
+      const el = this.msgRef.current, h = el ? el.scrollHeight : 0, t = el ? el.scrollTop : 0;
+      this.setState(st => ({ loadingOlder: false, loaded: Object.assign({}, st.loaded, { [c.id]: cur + 1 }) }), () => { if (el) el.scrollTop = el.scrollHeight - h + t; });
+    }, 1100);
+  }
+  loadAll(cb) {
+    const c = this.findChat(this.state.activeId);
+    const el = this.msgRef.current, h = el ? el.scrollHeight : 0, t = el ? el.scrollTop : 0;
+    clearTimeout(this.olderT);
+    this.setState(st => ({ loadingOlder: false, loaded: Object.assign({}, st.loaded, { [c.id]: this.maxBatch(c) }) }), () => { if (el) el.scrollTop = el.scrollHeight - h + t; if (cb) cb(); });
+  }
+  jumpDay(d) {
+    this.setState({ datePop: false });
+    this.loadAll(() => {
+      const el = this.msgRef.current, t = el && el.querySelector('[data-day="' + d + '"]');
+      if (t) el.scrollTo({ top: Math.max(0, t.offsetTop - 8), behavior: 'smooth' });
+    });
+  }
+
+  inOccur() {
+    const s = this.state, Z = this.Z, c = this.findChat(s.activeId);
+    if (!c || s.inQ.trim().length < 2) return [];
+    const out = [];
+    c.msgs.forEach(m => {
+      const f = Z.searchField(m);
+      if (f) Z.ranges(m[f], s.inQ).forEach(([a, b]) => out.push({ mid: m.id, field: f, s: a, e: b }));
+    });
+    return out;
+  }
+  openIn = () => {
+    if (this.state.inOpen) { if (this.inRef.current) this.inRef.current.focus(); return; }
+    this.setState({ inOpen: true, datePop: false });
+    this.loadAll(() => { if (this.inRef.current) this.inRef.current.focus(); });
+  };
+  closeIn = () => this.setState({ inOpen: false, inQ: '', inIdx: 0 });
+  onInQ = e => {
+    const v = e.target.value;
+    this.setState({ inQ: v, inIdx: 0 }, () => { const o = this.inOccur(); if (o.length) this.scrollToMid(o[0].mid, true); });
+  };
+  onInKey = e => { if (e.key === 'Enter') { e.preventDefault(); this.inStep(e.shiftKey ? -1 : 1); } };
+  inStep(d) {
+    const o = this.inOccur();
+    if (!o.length) return;
+    const i = (Math.min(this.state.inIdx, o.length - 1) + d + o.length) % o.length;
+    this.setState({ inIdx: i }, () => this.scrollToMid(o[i].mid, true));
+  }
+
+  retryMedia(id) {
+    this.setState(s => ({ retry: Object.assign({}, s.retry, { [id]: 'loading' }) }));
+    setTimeout(() => this.setState(s => ({ retry: Object.assign({}, s.retry, { [id]: 'ok' }) })), 900);
+  }
+  toggleAudio(id, dur) {
+    const a = this.state.audio;
+    if (a && a.id === id && a.playing) { this.stopTick(); this.setState({ audio: Object.assign({}, a, { playing: false }) }); return; }
+    const pos = a && a.id === id && a.pos < dur ? a.pos : 0;
+    this.stopTick();
+    this.setState({ audio: { id, dur, pos, playing: true } });
+    this.tick = setInterval(() => {
+      const a2 = this.state.audio;
+      if (!a2 || !a2.playing) return this.stopTick();
+      const p = a2.pos + 0.1 * (this.state.speeds[a2.id] || 1);
+      if (p >= a2.dur) { this.stopTick(); this.setState({ audio: Object.assign({}, a2, { pos: 0, playing: false }) }); return; }
+      this.setState({ audio: Object.assign({}, a2, { pos: p }) });
+    }, 100);
+  }
+  cycleSpeed(id) {
+    const cur = this.state.speeds[id] || 1;
+    this.setState(s => ({ speeds: Object.assign({}, s.speeds, { [id]: cur === 1 ? 1.5 : cur === 1.5 ? 2 : 1 }) }));
+  }
+  seekAudio(e, id, dur) {
+    const r = e.currentTarget.getBoundingClientRect();
+    const f = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
+    const a = this.state.audio, playing = !!(a && a.id === id && a.playing);
+    if (!playing) this.stopTick();
+    this.setState({ audio: { id, dur, pos: f * dur, playing } });
+  }
+
+  mediaList(c) { return c ? c.msgs.filter(m => (m.k === 'image' || m.k === 'video') && (!m.broken || this.state.retry[m.id] === 'ok')) : []; }
+  openViewer(mid) {
+    const c = this.findChat(this.state.activeId), list = this.mediaList(c), idx = list.findIndex(m => m.id === mid);
+    if (idx < 0) return;
+    this.stopTick();
+    this.setState({ viewer: { chatId: c.id, idx }, audio: null });
+  }
+  closeViewer() { this.stopTick(); this.setState({ viewer: null, audio: null }); }
+  viewerStep(d) {
+    const v = this.state.viewer;
+    if (!v) return;
+    const n = v.idx + d;
+    if (n < 0 || n >= this.mediaList(this.findChat(v.chatId)).length) return;
+    this.stopTick();
+    this.setState({ viewer: Object.assign({}, v, { idx: n }), audio: null });
+  }
+  viewerVals() {
+    const s = this.state, Z = this.Z, c = this.findChat(s.viewer.chatId), list = this.mediaList(c), i = s.viewer.idx, m = list[i];
+    if (!m) return {};
+    const [a, b] = m.ratio.split('/').map(Number), r = a / b;
+    const who = m.w === 'me' ? 'Você' : c.parts[m.w];
+    const au = s.audio && s.audio.id === m.id ? s.audio : null, pos = au ? au.pos : 0, playing = !!(au && au.playing);
+    return {
+      viewerOpen: true, vFile: m.file, vWho: who, vDate: `${Z.fmt(m.d)} às ${m.t}`, vCaption: m.caption || '', vHasCap: !!m.caption,
+      vCount: `${i + 1} de ${list.length}`, vPh: Z.ph(m.hue), vRatio: m.ratio,
+      vW: `min(calc(100vw - ${s.narrow ? 32 : 200}px), calc((100vh - 220px) * ${r.toFixed(3)}))`,
+      vInitials: m.w === 'me' ? Z.initials(s.set.names[0] || 'Você') : Z.initials(who), vAvBg: m.w === 'me' ? '#008069' : Z.AV[c.av % 8],
+      vPrevOp: i === 0 ? '.3' : '1', vNextOp: i === list.length - 1 ? '.3' : '1',
+      vPrevCur: i === 0 ? 'default' : 'pointer', vNextCur: i === list.length - 1 ? 'default' : 'pointer',
+      vPrev: () => this.viewerStep(-1), vNext: () => this.viewerStep(1), vClose: () => this.closeViewer(),
+      vDownload: () => this.showToast('Download simulado: ' + m.file),
+      vIsVideo: m.k === 'video', vPlaying: playing, vPaused: !playing, vToggle: () => this.toggleAudio(m.id, m.dur),
+      vPct: m.dur ? ((pos / m.dur) * 100).toFixed(1) + '%' : '0%', vTime: m.dur ? `${Z.dur(pos)} / ${Z.dur(m.dur)}` : '',
+    };
+  }
+  docVals() {
+    const s = this.state, Z = this.Z, c = this.findChat(s.activeId), m = c && c.msgs.find(x => x.id === s.docView);
+    if (!m) return {};
+    const W = ['96%', '91%', '99%', '72%', '94%', '88%', '97%', '54%', '93%', '90%', '98%', '66%', '95%', '84%', '92%', '61%'];
+    const n = Math.min(m.pages || 1, 3), pdf = m.ext === 'PDF';
+    return {
+      docOpen: true, dName: m.file, dExt: m.ext, dExtBg: ({ PDF: '#D64545', XLSX: '#1E8A4C', ZIP: '#6B7780', CSV: '#127C8C' })[m.ext] || '#6B7780',
+      dMeta: [m.pages ? `${m.pages} ${m.pages === 1 ? 'página' : 'páginas'}` : null, m.size, `${Z.fmt(m.d)} às ${m.t}`].filter(Boolean).join(' · '),
+      dTitle: m.file.replace(/\.[^.]+$/, '').replace(/_/g, ' '), dTo: `${c.name} · enviado por ${m.w === 'me' ? 'você' : c.parts[m.w]}`,
+      dCanPreview: pdf, dNoPreview: !pdf, dExtLower: '.' + m.ext.toLowerCase(),
+      dPages: pdf ? Array.from({ length: n }, (_, i) => ({ key: i, isFirst: i === 0, label: `Página ${i + 1} de ${m.pages}`, bars: W.slice(0, i === 0 ? 11 : 16).map((w, j) => ({ key: j, w })) })) : [],
+      dHasMore: pdf && m.pages > 3, dMore: `Mais ${m.pages - 3} páginas no arquivo original`,
+      dClose: () => this.setState({ docView: null }), dDownload: () => this.showToast('Download simulado: ' + m.file),
+    };
+  }
+  addSamples() {
+    const cur = this.state.imp.files;
+    const add = this.Z.sampleFiles().filter(f => !cur.find(x => x.id === f.id));
+    if (!add.length) return;
+    this.setImp({ files: cur.concat(add), dragging: false });
+    this.startProc();
+  }
+  startProc() {
+    if (this.procT) return;
+    this.procT = setInterval(() => {
+      const files = this.state.imp.files.map(f => Object.assign({}, f));
+      let cur = files.find(f => f.status === 'proc');
+      if (!cur) {
+        cur = files.find(f => f.status === 'wait');
+        if (!cur) { clearInterval(this.procT); this.procT = null; return; }
+        cur.status = 'proc';
+      }
+      cur.pct = Math.min(100, cur.pct + 4 + Math.random() * 7);
+      if (cur.pct >= 100) cur.status = cur.kind === 'err' ? 'err' : 'ok';
+      this.setImp({ files });
+    }, 140);
+  }
+  updFile(id, patch) { this.setImp({ files: this.state.imp.files.map(f => f.id === id ? Object.assign({}, f, patch) : f) }); }
+  cancelImport() { clearInterval(this.procT); this.procT = null; this.setImp({ files: [], name: 0, dragging: false }); this.closePage(); }
+  finishImport() {
+    const s = this.state, Z = this.Z, chats = s.chats.slice();
+    let nNew = 0, nUpd = 0;
+    s.imp.files.forEach(f => {
+      if (f.key === 'grafica') {
+        if (f.choice === 'merge') {
+          const i = chats.findIndex(c => c.id === 'grafica');
+          if (i >= 0 && !chats[i].merged) { const extra = Z.mk('grafica-i', '', ['x'], '', Z.importRows('grafica')).msgs; chats[i] = Object.assign({}, chats[i], { msgs: chats[i].msgs.concat(extra), merged: true }); nUpd++; }
+        } else if (!chats.find(c => c.id === 'grafica2')) { chats.push(Z.mk('grafica2', 'Gráfica Rápida (2)', ['Gráfica Rápida'], f.name, Z.importRows('grafica'), { av: 4 })); nNew++; }
+      } else if (!chats.find(c => c.id === f.key)) {
+        const ps = f.key === 'obras' ? ['Eduardo Nunes', 'Patrícia Gomes'] : ['Beatriz Rocha'];
+        chats.push(Z.mk(f.key, f.conv, ps, f.name, Z.importRows(f.key), { av: f.key === 'obras' ? 1 : 3 }));
+        nNew++;
+      }
+    });
+    const pick = Z.nameOptions[s.imp.name];
+    const names = s.set.names.slice();
+    if (pick && pick.label === 'Rafael Moura' && !names.includes('Rafael Moura')) names.push('Rafael Moura');
+    this.setState(st => ({ chats, imp: { dragging: false, files: [], name: 0 }, rightMode: 'empty', set: Object.assign({}, st.set, { names }) }));
+    this.showToast(`Importação concluída: ${nNew} ${nNew === 1 ? 'conversa nova' : 'conversas novas'}${nUpd ? ` e ${nUpd} atualizada` : ''}`);
+  }
+  importVals() {
+    const imp = this.state.imp, Z = this.Z;
+    const n = imp.files.length, done = imp.files.filter(f => f.status === 'ok' || f.status === 'err').length;
+    const allDone = n > 0 && done === n;
+    const pending = imp.files.find(f => f.kind === 'exists' && f.status === 'ok' && !f.choice);
+    const can = allDone && !pending;
+    const PILL = { wait: ['Aguardando', 'var(--head)', 'var(--tx2)'], proc: ['', 'var(--accent-soft)', 'var(--accent-tx)'], ok: ['Concluído', 'var(--ok-bg)', 'var(--ok-tx)'], err: ['Erro', 'var(--err-bg)', 'var(--err-tx)'] };
+    const chip = sel => sel ? ['var(--btn)', 'var(--btn-tx)', 'var(--btn)'] : ['transparent', 'var(--warn-tx)', 'var(--warn-tx)'];
+    return {
+      dzDragging: imp.dragging, dzIdle: !imp.dragging,
+      dzBorder: imp.dragging ? 'var(--accent)' : 'var(--div2)', dzBg: imp.dragging ? 'var(--accent-soft)' : 'var(--panel)',
+      dzIconBg: imp.dragging ? 'var(--btn)' : 'var(--head)', dzIconFg: imp.dragging ? 'var(--btn-tx)' : 'var(--tx2)',
+      onDragOver: e => { e.preventDefault(); if (!this.state.imp.dragging) this.setImp({ dragging: true }); },
+      onDragLeave: e => { if (!e.currentTarget.contains(e.relatedTarget)) this.setImp({ dragging: false }); },
+      onDrop: e => { e.preventDefault(); this.setImp({ dragging: false }); this.addSamples(); },
+      addSamples: () => this.addSamples(), hasFiles: n > 0,
+      impProgressText: n ? `${done} de ${n} arquivos processados` : '',
+      files: imp.files.map(f => {
+        const st = f.status, p = PILL[st], isDone = st === 'ok' || st === 'err';
+        const m = chip(f.choice === 'merge'), sp = chip(f.choice === 'separate');
+        return {
+          key: f.id, name: f.name, size: f.size, ext: f.name.endsWith('.zip') ? 'ZIP' : 'TXT', conv: f.conv, rep: f.sum[1],
+          pillText: st === 'proc' ? `Processando ${Math.round(f.pct)}%` : p[0], pillBg: p[1], pillFg: p[2],
+          sub: st === 'wait' ? 'Na fila' : st === 'proc' ? 'Lendo mensagens e anexos…' : 'Conversa: ' + f.conv,
+          isProc: st === 'proc', pct: f.pct.toFixed(0) + '%', isDone,
+          stats: [
+            { key: 'a', n: f.sum[0], l: 'mensagens novas', color: 'var(--tx)' },
+            { key: 'b', n: f.sum[1], l: 'repetidas', color: 'var(--tx)' },
+            { key: 'c', n: f.sum[2], l: 'anexos encontrados', color: 'var(--tx)' },
+            { key: 'd', n: f.sum[3], l: 'anexos faltantes', color: f.sum[3] ? 'var(--err-tx)' : 'var(--tx)' },
+          ],
+          isExists: isDone && f.kind === 'exists',
+          mergeBg: m[0], mergeFg: m[1], mergeBd: m[2], sepBg: sp[0], sepFg: sp[1], sepBd: sp[2],
+          onMerge: () => this.updFile(f.id, { choice: 'merge' }), onSeparate: () => this.updFile(f.id, { choice: 'separate' }),
+          isErr: st === 'err', errText: `${f.lines ? f.lines.length : 0} linhas não foram reconhecidas. As demais mensagens foram importadas.`,
+          linesOpen: !!f.open, linesLabel: f.open ? 'Ocultar linhas' : 'Ver linhas',
+          toggleLines: () => this.updFile(f.id, { open: !f.open }),
+          lines: (f.lines || []).map((l, i) => Object.assign({ key: i }, l)),
+        };
+      }),
+      showName: allDone,
+      nameOpts: Z.nameOptions.map((o, i) => {
+        const sel = imp.name === i;
+        return { key: i, label: o.label, hint: o.hint, tag: o.tag, hasTag: !!o.tag, dot: sel ? 'var(--accent)' : 'transparent', ring: sel ? 'var(--accent)' : 'var(--tx2)', bg: sel ? 'var(--accent-soft)' : 'transparent', bd: sel ? 'var(--accent)' : 'var(--div)', onClick: () => this.setImp({ name: i }) };
+      }),
+      finishHint: !allDone ? 'Aguarde o processamento dos arquivos' : pending ? `Escolha o que fazer com “${pending.conv}”` : 'Tudo pronto para concluir',
+      finishBg: can ? 'var(--btn)' : 'var(--head)', finishFg: can ? 'var(--btn-tx)' : 'var(--tx2)', finishCursor: can ? 'pointer' : 'not-allowed',
+      finish: () => { if (can) this.finishImport(); }, cancelImport: () => this.cancelImport(),
+    };
+  }
+
+  addName() {
+    const n = this.state.set.newName.trim();
+    if (!n || this.state.set.names.includes(n)) return this.setSet({ newName: '' });
+    this.setSet({ names: this.state.set.names.concat(n), newName: '' }, true);
+  }
+  changePath() {
+    const P = ['C:\\Usuários\\Rafael\\Documentos\\ZapVault', 'D:\\Arquivo\\ZapVault', 'E:\\Backup\\ZapVault'];
+    const i = P.indexOf(this.state.set.path);
+    this.setSet({ path: P[(i + 1) % P.length] }, true);
+    this.showToast('Pasta alterada (simulado)');
+  }
+  doBackup() {
+    clearInterval(this.bkT);
+    this.setSet({ backup: 'running', backupPct: 0 });
+    this.bkT = setInterval(() => {
+      const p = this.state.set.backupPct + 4 + Math.random() * 6;
+      if (p >= 100) {
+        clearInterval(this.bkT);
+        const d = new Date(), hh = String(d.getHours()).padStart(2, '0'), mm = String(d.getMinutes()).padStart(2, '0');
+        this.setSet({ backup: 'done', backupPct: 100, lastBackup: `20/10/2026 às ${hh}:${mm}`, backupFile: 'ZapVault-backup-2026-10-20.zip (1,2 GB)' }, true);
+        return;
+      }
+      this.setSet({ backupPct: p });
+    }, 90);
+  }
+  togglePwd() {
+    if (this.state.set.pwdOn) this.setSet({ pwdOn: false, pwdSet: false, pwd1: '', pwd2: '', pwdErr: '' }, true);
+    else this.setSet({ pwdOn: true });
+  }
+  savePwd() {
+    const st = this.state.set;
+    if (st.pwd1.length < 4) return this.setSet({ pwdErr: 'Use pelo menos 4 caracteres.' });
+    if (st.pwd1 !== st.pwd2) return this.setSet({ pwdErr: 'As senhas não coincidem.' });
+    this.setSet({ pwdSet: true, pwd1: '', pwd2: '', pwdErr: '' }, true);
+    this.showToast('Senha ativada');
+  }
+  settingsVals(allMsgs, chats) {
+    const st = this.state.set, dark = this.state.theme === 'dark', sel = dark ? 'var(--sel)' : 'var(--panel)';
+    const anexos = chats.reduce((n, c) => n + c.msgs.filter(m => ['image', 'video', 'audio', 'doc', 'sticker'].includes(m.k)).length, 0);
+    return {
+      names: st.names.map(n => ({ key: n, n, onRemove: () => this.setSet({ names: this.state.set.names.filter(x => x !== n) }, true) })),
+      noNames: !st.names.length, newName: st.newName,
+      onNewName: e => this.setSet({ newName: e.target.value }), onNameKey: e => { if (e.key === 'Enter') this.addName(); }, addName: () => this.addName(),
+      lightBg: dark ? 'transparent' : sel, lightFg: dark ? 'var(--tx2)' : 'var(--tx)', lightSh: dark ? 'none' : 'var(--shadow)',
+      darkBg: dark ? sel : 'transparent', darkFg: dark ? 'var(--tx)' : 'var(--tx2)', darkSh: dark ? 'var(--shadow)' : 'none',
+      setLight: () => this.setTheme('light', true), setDark: () => this.setTheme('dark', true),
+      path: st.path, changePath: () => this.changePath(),
+      storageInfo: `${allMsgs.toLocaleString('pt-BR')} mensagens e ${anexos} anexos · 1,2 GB usados`,
+      backupIdle: st.backup === 'idle', backupRunning: st.backup === 'running', backupDone: st.backup === 'done',
+      backupPct: Math.round(st.backupPct) + '%', lastBackup: st.lastBackup, backupFile: st.backupFile, doBackup: () => this.doBackup(),
+      pwdTrack: st.pwdOn ? 'var(--btn)' : 'var(--div2)', pwdKnob: st.pwdOn ? '21px' : '3px', togglePwd: () => this.togglePwd(),
+      pwdForm: st.pwdOn && !st.pwdSet, pwdActive: st.pwdOn && st.pwdSet, pwd1: st.pwd1, pwd2: st.pwd2,
+      onPwd1: e => this.setSet({ pwd1: e.target.value, pwdErr: '' }), onPwd2: e => this.setSet({ pwd2: e.target.value, pwdErr: '' }),
+      savePwd: () => this.savePwd(), pwdErr: st.pwdErr, changePwd: () => this.setSet({ pwdSet: false }),
+      saved: st.saved,
+    };
+  }
+
+  renderVals() {
+    const s = this.state, Z = this.Z;
+    const estado = this.estado();
+    const chats = Z ? this.listChats() : [];
+    const booting = s.booting || !Z || estado === 'Acervo carregando';
+    const qq = s.q.trim();
+    const narrow = s.narrow, dark = s.theme === 'dark';
+    const showRight = s.rightMode !== 'empty';
+    const allMsgs = chats.reduce((n, c) => n + c.msgs.filter(m => m.w !== 's').length, 0);
+    const v = {
+      searchRef: this.searchRef, msgRef: this.msgRef, inRef: this.inRef,
+      leftDisplay: narrow && showRight ? 'none' : 'flex', rightDisplay: narrow && !showRight ? 'none' : 'flex',
+      leftFlex: narrow ? '1 1 100%' : '0 0 30%', leftMin: narrow ? '0' : '320px', leftMax: narrow ? 'none' : '420px',
+      kbd: this.isMac ? '⌘K' : 'Ctrl K', themeIsDark: dark, themeIsLight: !dark,
+      toggleTheme: () => this.setTheme(dark ? 'light' : 'dark'),
+      openImport: () => this.setState({ rightMode: 'import', datePop: false }),
+      openSettings: () => this.setState({ rightMode: 'settings', datePop: false }),
+      setBtnBg: s.rightMode === 'settings' ? 'var(--press)' : 'transparent',
+      q: s.q, hasQ: !!s.q, noQ: !s.q, onQ: this.onQ,
+      clearQ: () => { this.setState({ q: '', tabPinned: false, searching: false }); if (this.searchRef.current) this.searchRef.current.focus(); },
+      hint1: qq.length === 1, skel: [0, 1, 2, 3, 4, 5, 6, 7, 8], skel4: [0, 1, 2, 3],
+      statChats: chats.length.toLocaleString('pt-BR'), statMsgs: allMsgs.toLocaleString('pt-BR'), statPeriod: this.periodAll(chats),
+      archiveBoot: booting, archiveEmpty: !booting && !chats.length, archiveFull: !booting && chats.length > 0,
+      isWelcome: s.rightMode === 'empty', isChat: s.rightMode === 'chat', isImport: s.rightMode === 'import', isSettings: s.rightMode === 'settings',
+      showBack: narrow, closePage: () => this.closePage(),
+      hasToast: !!s.toast, toast: s.toast ? s.toast.text : '',
+      viewerOpen: false, docOpen: false,
+    };
+    const mode = booting ? 'skel' : !chats.length ? 'empty' : qq.length >= 2 ? 'search' : 'list';
+    Object.assign(v, { showSkel: mode === 'skel', showEmpty: mode === 'empty', showList: mode === 'list', showSearch: mode === 'search' });
+    v.chatItems = mode === 'list' ? chats.map(c => this.listItem(c)) : [];
+    if (mode === 'search') Object.assign(v, this.searchVals(chats, qq));
+    if (Z && this.extraVals) Object.assign(v, this.extraVals(estado, chats, allMsgs));
+    return v;
+  }
+}
+</script>
+</body>
+</html>
