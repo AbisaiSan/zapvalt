@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\SettingsController;
 use App\Http\Controllers\MediaController;
 use App\Models\Conversation;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,6 +17,12 @@ use Inertia\Inertia;
 Route::bind('conversation', fn (string $id) => Conversation::query()->active()->findOrFail((int) $id));
 
 Route::get('/', fn () => Inertia::render('Home'))->name('home');
+Route::get('/c/{id}', fn (Request $request, int $id) => Inertia::render('Chat', [
+    'conversationId' => $id,
+    'focusMessageId' => $request->integer('m') ?: null,
+]))->whereNumber('id')->name('chat');
+Route::get('/importar', fn () => Inertia::render('Import'))->name('import');
+Route::get('/configuracoes', fn () => Inertia::render('Settings'))->name('settings');
 
 Route::prefix('api')->group(function () {
     Route::get('archive/summary', [ArchiveController::class, 'summary']);

@@ -39,3 +39,10 @@ test('monta a frase FTS com aspas internas dobradas', function () {
 test('escapa curingas do LIKE', function () {
     expect(TextNormalizer::likeEscape('50%_a\\b'))->toBe('50\\%\\_a\\\\b');
 });
+
+test('passa nos mesmos casos de normalização que o frontend', function (string $input, string $expected) {
+    expect(TextNormalizer::normalize($input))->toBe($expected);
+})->with(fn () => array_map(
+    fn ($case) => [$case['input'], $case['expected']],
+    json_decode(file_get_contents(__DIR__.'/../Fixtures/normalization.json'), true),
+));

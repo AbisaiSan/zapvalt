@@ -163,6 +163,12 @@ html[data-zv-theme="dark"] {
         background: var(--panel);
     }
 
+    /* O protótipo usa a altura de linha padrão do navegador (o Tailwind traz 1.5). */
+    html,
+    body {
+        line-height: normal;
+    }
+
     body {
         font-family: var(--font-sans);
         font-size: 14px;

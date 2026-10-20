@@ -67,3 +67,13 @@ Decisões pequenas tomadas durante a implementação, com o motivo.
 - **Dicas do Concluir.** "Aguarde o processamento dos arquivos", "Escolha o que fazer com “Nome”" e "Tudo pronto para concluir", como no protótipo, e "Nenhum arquivo pôde ser importado" quando todos falharam. Texto de apoio dos nomes: "Autor de N mensagens em M arquivos" ("nos M arquivos" quando aparece em todos), no singular quando for 1.
 - **Senha, bloqueio e backup.** As rotas existem e respondem 501 até a tarefa 09.
 - **Validação em português.** Criado `lang/pt_BR/validation.php` com as regras usadas; sem ele, os erros apareciam como chaves (`validation.string`).
+
+## Tarefa 05: estrutura da interface e lista
+
+- **Layout persistente.** `AppShell.vue` é o layout das páginas do Inertia; a lista, a busca e a rolagem continuam montadas ao trocar de página. Os dados vêm da API JSON (não de props do Inertia), e só o id da conversa e a mensagem de foco (`?m=`) vão como props.
+- **Esc em ordem fixa.** Cada parte da tela registra seu tratamento com uma prioridade (`resources/js/lib/escape.ts`), e o Esc fecha sempre na ordem da especificação, independente da ordem em que as coisas foram abertas.
+- **Tema.** O botão de tema vale na hora (localStorage) e também salva em `settings.theme` pela API.
+- **Altura de linha.** O Tailwind define 1,5 como padrão; o protótipo usa a do navegador. Foi definida `line-height: normal` para as medidas baterem.
+- **Foco visível.** O campo de busca ganha contorno verde ao receber foco, que o protótipo não tem; é exigência de acessibilidade.
+- **Normalização compartilhada.** Os casos de teste de normalização ficam em `tests/Fixtures/normalization.json` e são usados pelo Pest e pelo Vitest.
+- **Testes do frontend.** O Inertia é simulado nos testes do Vitest (`resources/js/test-setup.ts`), porque não roda fora do navegador.

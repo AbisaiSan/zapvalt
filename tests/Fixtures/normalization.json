@@ -1,0 +1,17 @@
+[
+    { "input": "PROPOSTA", "expected": "proposta" },
+    { "input": "Proposta", "expected": "proposta" },
+    { "input": "proposta", "expected": "proposta" },
+    { "input": "ação", "expected": "acao" },
+    { "input": "AÇÃO", "expected": "acao" },
+    { "input": "acao", "expected": "acao" },
+    { "input": "Coração", "expected": "coracao" },
+    { "input": "ç", "expected": "c" },
+    { "input": "ñ", "expected": "n" },
+    { "input": "ü", "expected": "u" },
+    { "input": "Señor Müller", "expected": "senor muller" },
+    { "input": "Ótimo 👍🏽 até já", "expected": "otimo 👍🏽 ate ja" },
+    { "input": "Ela disse “sim” e ‘talvez’", "expected": "ela disse “sim” e ‘talvez’" },
+    { "input": "Fechado 🎉", "expected": "fechado 🎉" },
+    { "input": "Reunião às 15h", "expected": "reuniao as 15h" }
+]
