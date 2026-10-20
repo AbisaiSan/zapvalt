@@ -1,6 +1,6 @@
 # Tarefa 10: Acabamento e verificação final
 
-**Status:** em andamento
+**Status:** concluída
 
 ## Objetivo
 
