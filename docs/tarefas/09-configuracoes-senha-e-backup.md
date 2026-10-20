@@ -1,6 +1,6 @@
 # Tarefa 09: Configurações, senha e backup
 
-**Status:** em andamento
+**Status:** concluída
 
 ## Objetivo
 
