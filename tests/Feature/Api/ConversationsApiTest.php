@@ -90,7 +90,7 @@ test('mostra o cabeçalho da conversa com participantes e cores', function () {
         'name' => 'Grupo Projeto Alfa',
         'is_group' => true,
         'avatar_index' => 2,
-        'first_message_at' => '2026-10-09T00:00:00',
+        'first_message_at' => '2026-10-09T10:00:00',
         'last_message_at' => '2026-10-19T17:05:00',
         'message_count' => 25,
         'participant_count' => 4,
