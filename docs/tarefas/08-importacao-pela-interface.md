@@ -1,6 +1,6 @@
 # Tarefa 08: Importação pela interface
 
-**Status:** pendente
+**Status:** concluída
 
 ## Objetivo
 
@@ -14,18 +14,18 @@ Importar arquivos pela tela, com progresso real e confirmação.
 
 ## Entregas
 
-- [ ] Arrastar e soltar, envio em partes de 8 MB, fila por arquivo
-- [ ] Progresso real por arquivo e estado de falha
-- [ ] Estatísticas: novas, repetidas, anexos encontrados, anexos faltantes
-- [ ] Conversa que já existe: "Somar à existente" ou "Manter separada"
-- [ ] Erro com lista de linhas não reconhecidas
-- [ ] Pergunta "Este é o seu nome nas mensagens?"
-- [ ] Concluir publica, Cancelar desfaz tudo
+- [x] Arrastar e soltar, envio em partes de 8 MB, fila por arquivo
+- [x] Progresso real por arquivo e estado de falha
+- [x] Estatísticas: novas, repetidas, anexos encontrados, anexos faltantes
+- [x] Conversa que já existe: "Somar à existente" ou "Manter separada"
+- [x] Erro com lista de linhas não reconhecidas
+- [x] Pergunta "Este é o seu nome nas mensagens?"
+- [x] Concluir publica, Cancelar desfaz tudo
 
 ## Como conferir
 
-- [ ] Importar arquivos de exemplo pela tela dá o mesmo resultado da linha de comando
-- [ ] Cancelar não deixa nada para trás
+- [x] Importar arquivos de exemplo pela tela dá o mesmo resultado da linha de comando
+- [x] Cancelar não deixa nada para trás
 
 ## Regras desta tarefa
 
@@ -35,4 +35,4 @@ Importar arquivos pela tela, com progresso real e confirmação.
 
 ## Anotações
 
-(Espaço para o Claude Code registrar o que foi decidido ou ficou pendente.)
+- Decisões em `docs/DECISOES.md` (seção "Tarefa 08"). Conferido de ponta a ponta no Chrome: importar e cancelar pela tela.
