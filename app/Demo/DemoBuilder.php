@@ -43,9 +43,11 @@ class DemoBuilder
         $pages = [];
         $audioSeq = 0;
 
-        foreach ($conversation['rows'] as [$day, $time, $who, $content]) {
+        foreach ($conversation['rows'] as $i => [$day, $time, $who, $content]) {
+            // Sem horário no protótipo (aviso de criptografia): usa o da mensagem seguinte.
+            $time ??= $conversation['rows'][$i + 1][1] ?? '00:00';
             $date = CarbonImmutable::parse('2026-'.$day)->addDays($this->shiftDays);
-            $prefix = $date->format('d/m/Y').' '.($time ?? '00:00').' - ';
+            $prefix = $date->format('d/m/Y').' '.$time.' - ';
             $sender = match (true) {
                 $who === 'me' => DemoData::ME,
                 $who === 's' => null,

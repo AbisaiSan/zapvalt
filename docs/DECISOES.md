@@ -77,3 +77,14 @@ Decisões pequenas tomadas durante a implementação, com o motivo.
 - **Foco visível.** O campo de busca ganha contorno verde ao receber foco, que o protótipo não tem; é exigência de acessibilidade.
 - **Normalização compartilhada.** Os casos de teste de normalização ficam em `tests/Fixtures/normalization.json` e são usados pelo Pest e pelo Vitest.
 - **Testes do frontend.** O Inertia é simulado nos testes do Vitest (`resources/js/test-setup.ts`), porque não roda fora do navegador.
+
+## Tarefa 06: tela da conversa
+
+- **Janela de mensagens.** A conversa carrega 100 mensagens por vez e mantém no máximo 300 na tela; ao passar disso, descarta as do lado oposto ao que está sendo carregado e volta a pedi-las ao servidor se a pessoa rolar de volta. A mensagem visível fica no mesmo lugar enquanto entram ou saem mensagens. Medido na conversa de 100 mil mensagens: abre em menos de 300 ms e cada lote de antigas carrega em cerca de 25 ms.
+- **Dias no "Pular para data".** Como no protótipo, avisos e chamadas não contam na quantidade do dia, mas o dia aparece. Com mais de um mês, a lista mostra o mês e o ano como cabeçalho; ela abre já nas datas mais recentes.
+- **Busca na conversa.** Começa na primeira ocorrência, em ordem cronológica, como no protótipo. Ocorrência fora da janela carregada é buscada com `around` antes de rolar.
+- **Botão de ir ao fim.** O contador mostra as mensagens carregadas abaixo da tela; se ainda há mensagens mais novas fora da janela, aparece com "+".
+- **Áudio adiantado.** O player de áudio (tocar, pausar, barra clicável e velocidades 1x, 1,5x e 2x) já funciona, com um único `<audio>` para o aplicativo inteiro. O ajuste fino fica para a tarefa 07.
+- **Imagens, vídeos e documentos.** Até a tarefa 07 (visualizador e pré-visualização), clicar abre o arquivo em outra aba. O botão de baixar do documento já funciona.
+- **Vídeo sem pôster.** Sem `ffmpeg` não há miniatura do vídeo; o balão mostra um fundo escuro com o nome do arquivo, o botão de reprodução e a duração, se conhecida.
+- **Demonstração.** O aviso de criptografia, que no protótipo não tem horário, passa a usar o horário da mensagem seguinte em vez de 00:00.

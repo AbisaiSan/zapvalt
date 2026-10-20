@@ -82,7 +82,8 @@ class MessageController extends Controller
     {
         $days = DB::table('messages')
             ->where('conversation_id', $conversation->id)
-            ->selectRaw('substr(sent_at, 1, 10) AS day, COUNT(*) AS count')
+            // Como no protótipo: avisos e chamadas não contam, mas o dia aparece (com 0).
+            ->selectRaw("substr(sent_at, 1, 10) AS day, SUM(kind NOT IN ('system', 'call')) AS count")
             ->groupBy('day')
             ->orderBy('day')
             ->get()

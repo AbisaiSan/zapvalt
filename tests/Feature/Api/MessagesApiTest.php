@@ -113,10 +113,10 @@ test('day começa na primeira mensagem do dia', function () {
     $this->getJson("/api/conversations/{$this->maria}/messages?day=20-10-2026")->assertUnprocessable();
 });
 
-test('lista os dias com a quantidade de mensagens', function () {
+test('lista os dias com a quantidade de mensagens, sem avisos e chamadas', function () {
     $this->getJson("/api/conversations/{$this->maria}/days")
         ->assertOk()
-        ->assertExactJson(['days' => [['day' => '2026-10-19', 'count' => 18], ['day' => '2026-10-20', 'count' => 12]]]);
+        ->assertExactJson(['days' => [['day' => '2026-10-19', 'count' => 16], ['day' => '2026-10-20', 'count' => 12]]]);
 });
 
 test('busca na conversa devolve mensagens em ordem e ocorrências sem sobreposição', function () {
