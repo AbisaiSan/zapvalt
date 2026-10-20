@@ -15,5 +15,7 @@ return [
         // Pacotes .zip dentro de .zip são abertos até este nível.
         'max_zip_depth' => 2,
         'thumb_size' => 640,
+        // Tamanho de cada pedaço do envio pelo navegador.
+        'chunk_size' => 8 * 1024 * 1024,
     ],
 ];

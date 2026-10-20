@@ -85,4 +85,4 @@ npm test        # frontend (Vitest)
 
 A especificação, o protótipo e as tarefas ficam em `docs/`. As decisões tomadas durante o desenvolvimento ficam em `docs/DECISOES.md`.
 
-Status: em desenvolvimento (tarefas 00 a 03 concluídas)
+Status: em desenvolvimento (tarefas 00 a 04 concluídas)

@@ -2,8 +2,11 @@
 
 use App\Import\ImportAnalyzer;
 use App\Import\ImportService;
+use App\Models\Conversation;
 use App\Models\ImportBatch;
+use App\Models\Message;
 use App\Support\DataPath;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
 use Tests\TestCase;
 
@@ -134,4 +137,27 @@ function importFiles(array $files, string $choice = 'merge', ?string $me = null)
 function filesUnder(string $dir): array
 {
     return is_dir($dir) ? array_map(fn ($f) => $f->getPathname(), File::allFiles($dir)) : [];
+}
+
+/**
+ * Pasta de dados temporária com as 12 conversas fictícias do protótipo, com "hoje" em 20/10/2026.
+ */
+function seedDemo(): string
+{
+    $root = useTempDataPath();
+    Carbon::setTestNow('2026-10-20 12:00:00');
+    test()->artisan('zapvault:demo')->assertSuccessful();
+    Carbon::setTestNow();
+
+    return $root;
+}
+
+function conversationId(string $name): int
+{
+    return (int) Conversation::query()->where('name', $name)->value('id');
+}
+
+function messageId(string $conversation, string $body): int
+{
+    return (int) Message::query()->where('conversation_id', conversationId($conversation))->where('body', $body)->value('id');
 }

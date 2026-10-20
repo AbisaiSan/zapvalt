@@ -40,11 +40,7 @@ class ImportService
     public function addFile(ImportBatch $batch, string $path, ?string $originalName = null): ImportFile
     {
         $originalName = basename($originalName ?? $path);
-        $ext = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
-
-        if (! in_array($ext, ['txt', 'zip'], true)) {
-            throw new ImportException('Só é possível importar arquivos .txt ou .zip.');
-        }
+        $ext = $this->checkExtension($originalName);
 
         if (! is_file($path) || ! is_readable($path)) {
             throw new ImportException("Arquivo não encontrado: {$originalName}");
@@ -57,11 +53,7 @@ class ImportService
         }
 
         $size = (int) filesize($path);
-        $free = @disk_free_space($this->root);
-
-        if ($free !== false && $free < $size * 2) {
-            throw new ImportException('Não há espaço livre suficiente no disco para importar este arquivo.');
-        }
+        $this->checkFreeSpace($size);
 
         $relative = "originals/{$batch->id}/".Str::random(8).'-'.$this->safeName($originalName);
         File::ensureDirectoryExists(dirname($this->root.'/'.$relative), 0700);
@@ -76,6 +68,106 @@ class ImportService
             'sha256' => hash_file('sha256', $path),
             'status' => ImportFile::WAITING,
         ]);
+    }
+
+    /** Tamanho de cada pedaço do envio pelo navegador (8 MB). */
+    public static function chunkSize(): int
+    {
+        return (int) config('zapvault.import.chunk_size', 8 * 1024 * 1024);
+    }
+
+    /**
+     * Começa um envio em partes: reserva o arquivo em uploads-tmp.
+     */
+    public function startUpload(ImportBatch $batch, string $originalName, int $size): ImportFile
+    {
+        $originalName = basename(str_replace('\\', '/', $originalName));
+        $ext = $this->checkExtension($originalName);
+        $this->checkFreeSpace($size);
+
+        $relative = 'uploads-tmp/'.Str::uuid().'.part';
+        touch($this->root.'/'.$relative);
+        @chmod($this->root.'/'.$relative, 0600);
+
+        return ImportFile::query()->create([
+            'batch_id' => $batch->id,
+            'original_name' => $originalName,
+            'stored_path' => $relative,
+            'ext' => $ext,
+            'size_bytes' => $size,
+            'status' => ImportFile::UPLOADING,
+        ]);
+    }
+
+    /**
+     * Grava um pedaço na posição index * chunkSize().
+     *
+     * @param  resource  $body
+     */
+    public function writeChunk(ImportFile $file, int $index, $body): void
+    {
+        if ($file->status !== ImportFile::UPLOADING) {
+            throw new ImportException('Este envio já foi concluído.');
+        }
+
+        $offset = $index * self::chunkSize();
+        if ($index < 0 || $offset >= max(1, $file->size_bytes)) {
+            throw new ImportException('Pedaço fora do tamanho do arquivo.');
+        }
+
+        $out = fopen($this->root.'/'.$file->stored_path, 'c+b');
+        fseek($out, $offset);
+        $written = 0;
+
+        while (! feof($body)) {
+            $chunk = fread($body, 1024 * 1024);
+            if ($chunk === false || $chunk === '') {
+                break;
+            }
+            $written += strlen($chunk);
+            if ($written > self::chunkSize() || $offset + $written > $file->size_bytes) {
+                fclose($out);
+                throw new ImportException('O pedaço enviado é maior que o esperado.');
+            }
+            fwrite($out, $chunk);
+        }
+
+        fclose($out);
+    }
+
+    /**
+     * Fecha o envio: confere tamanho e conteúdo, move para originals/{lote}/ e deixa na fila.
+     */
+    public function completeUpload(ImportFile $file): ImportFile
+    {
+        if ($file->status !== ImportFile::UPLOADING) {
+            throw new ImportException('Este envio já foi concluído.');
+        }
+
+        $temp = $this->root.'/'.$file->stored_path;
+        clearstatcache(true, $temp);
+
+        if (! is_file($temp) || filesize($temp) !== $file->size_bytes) {
+            throw new ImportException('O envio ficou incompleto. Tente de novo.');
+        }
+
+        if ($file->ext === 'zip' && ! str_starts_with((string) file_get_contents($temp, false, null, 0, 4), 'PK')) {
+            @unlink($temp);
+            $file->delete();
+            throw new ImportException('O arquivo .zip está corrompido ou não é um .zip de verdade.');
+        }
+
+        $relative = "originals/{$file->batch_id}/".Str::random(8).'-'.$this->safeName($file->original_name);
+        File::ensureDirectoryExists(dirname($this->root.'/'.$relative), 0700);
+        rename($temp, $this->root.'/'.$relative);
+
+        $file->update([
+            'stored_path' => $relative,
+            'sha256' => hash_file('sha256', $this->root.'/'.$relative),
+            'status' => ImportFile::WAITING,
+        ]);
+
+        return $file;
     }
 
     /** Todos os arquivos analisados, nenhuma escolha pendente e algo para importar. */
@@ -192,6 +284,10 @@ class ImportService
             ->pluck('id');
 
         $hashes = MediaStore::hashesForMessages(fn ($q) => $q->whereIn('messages.conversation_id', $draftIds));
+
+        foreach ($batch->files()->where('status', ImportFile::UPLOADING)->pluck('stored_path') as $partial) {
+            @unlink($this->root.'/'.$partial);
+        }
 
         DB::transaction(function () use ($batch, $draftIds) {
             Conversation::query()->whereIn('id', $draftIds)->delete();
@@ -326,6 +422,27 @@ class ImportService
         }
 
         return $name;
+    }
+
+    private function checkExtension(string $name): string
+    {
+        $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+
+        if (! in_array($ext, ['txt', 'zip'], true)) {
+            throw new ImportException('Só é possível importar arquivos .txt ou .zip.');
+        }
+
+        return $ext;
+    }
+
+    /** Pelo menos o dobro do tamanho do arquivo livre em disco. */
+    private function checkFreeSpace(int $size): void
+    {
+        $free = @disk_free_space($this->root);
+
+        if ($free !== false && $free < $size * 2) {
+            throw new ImportException('Não há espaço livre suficiente no disco para importar este arquivo.');
+        }
     }
 
     private function safeName(string $name): string
