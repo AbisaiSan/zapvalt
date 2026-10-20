@@ -2,6 +2,7 @@ import { computed, reactive, watch } from 'vue';
 import { getJson, isAbort, query } from '../lib/api';
 import { searchable } from '../lib/search';
 import type { ConversationItem, MessageResult, MessageSearchPage } from '../types';
+import { useToast } from './useToast';
 
 export type SearchTab = 'chats' | 'msgs';
 
@@ -87,6 +88,8 @@ async function loadMoreMessages() {
         const page = await getJson<MessageSearchPage>('/api/search/messages' + query({ q: state.term, cursor: state.nextCursor }));
         state.messages.push(...page.results);
         state.nextCursor = page.next_cursor;
+    } catch {
+        useToast().show('Não foi possível carregar mais resultados.');
     } finally {
         state.loadingMore = false;
     }

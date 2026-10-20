@@ -5,7 +5,7 @@ import type { ImportState } from '../types';
 /** Envios em andamento neste navegador: bytes enviados por upload_id. */
 const uploads = reactive<Record<number, { sent: number; size: number }>>({});
 const rejected = reactive<{ name: string; message: string }[]>([]);
-const state = reactive<{ data: ImportState | null }>({ data: null });
+const state = reactive<{ data: ImportState | null; offline: boolean }>({ data: null, offline: false });
 let queue: Promise<void> = Promise.resolve();
 
 function xsrf(): string {
@@ -14,7 +14,13 @@ function xsrf(): string {
 }
 
 async function refresh() {
-    state.data = await getJson<ImportState>('/api/imports');
+    try {
+        state.data = await getJson<ImportState>('/api/imports');
+        state.offline = false;
+    } catch (e) {
+        state.offline = true;
+        throw e;
+    }
 }
 
 /** Envia um arquivo em pedaços (8 MB), um arquivo por vez, na ordem em que foram escolhidos. */

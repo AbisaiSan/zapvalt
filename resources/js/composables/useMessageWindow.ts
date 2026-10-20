@@ -2,6 +2,7 @@ import { reactive } from 'vue';
 import { getJson, query } from '../lib/api';
 import { cursorFor } from '../lib/rows';
 import type { Message, MessageWindow } from '../types';
+import { useToast } from './useToast';
 
 /** Mensagens pedidas por vez e o máximo mantido na tela (o resto é descartado e pedido de novo se preciso). */
 export const PAGE = 100;
@@ -66,6 +67,9 @@ export function useMessageWindow() {
             }
             state.messages = merged;
             return true;
+        } catch {
+            useToast().show('Não foi possível carregar as mensagens anteriores.');
+            return false;
         } finally {
             state.loadingOlder = false;
         }
@@ -87,6 +91,9 @@ export function useMessageWindow() {
             }
             state.messages = merged;
             return true;
+        } catch {
+            useToast().show('Não foi possível carregar as mensagens mais recentes.');
+            return false;
         } finally {
             state.loadingNewer = false;
         }

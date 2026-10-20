@@ -33,6 +33,7 @@ const { win, latest, around, day, older, newer, has } = useMessageWindow();
 
 const conversation = ref<ConversationHeader | null>(null);
 const notFound = ref(false);
+const loadFailed = ref(false);
 const list = ref<InstanceType<typeof MessageList> | null>(null);
 const flashId = ref<number | null>(null);
 const dateOpen = ref(false);
@@ -48,6 +49,7 @@ function flash(id: number) {
 
 async function open(id: number, focus: number | null) {
     notFound.value = false;
+    loadFailed.value = false;
     closeSearch();
     dateOpen.value = false;
     dialog.value = null;
@@ -61,6 +63,7 @@ async function open(id: number, focus: number | null) {
     } catch (error) {
         conversation.value = null;
         notFound.value = error instanceof ApiError && error.status === 404;
+        loadFailed.value = !notFound.value;
         return;
     }
 
@@ -229,7 +232,14 @@ onBeforeUnmount(() => {
 
             <InChatSearch v-if="searchOpen" ref="searchBox" v-model="inQ" :index="index" :total="total" :ready="ready" @step="step" @close="closeSearch" />
 
-            <div v-if="win.error" class="flex flex-1 items-center justify-center p-6 text-[13px] text-err-tx" role="alert">{{ win.error }}</div>
+            <div v-if="win.error" class="flex flex-1 flex-col items-center justify-center gap-3 p-6" role="alert">
+                <div class="text-[13px] text-err-tx">{{ win.error }}</div>
+                <button type="button" class="rounded-[14px] bg-chip px-[14px] py-1.5 text-[12.5px] text-accent-tx shadow-bubble" @click="open(conversationId, focusMessageId)">Tentar de novo</button>
+            </div>
+            <div v-else-if="win.loading && !win.messages.length" class="flex flex-1 items-center justify-center gap-2 text-[12.5px] text-tx2" role="status">
+                <span class="box-border h-3.5 w-3.5 animate-[zvSpin_.8s_linear_infinite] rounded-full border-2 border-div2 border-t-accent" />
+                <span>Carregando mensagens</span>
+            </div>
             <div v-else-if="!win.loading && !win.messages.length" class="flex flex-1 items-center justify-center p-6">
                 <div class="max-w-[320px] rounded-[10px] bg-chip px-6 py-5 text-center shadow-bubble">
                     <div class="text-[15px] text-tx">Nenhuma mensagem nesta conversa</div>
@@ -270,7 +280,27 @@ onBeforeUnmount(() => {
             <RenameDialog v-if="dialog === 'rename'" :conversation-id="conversation.id" :name="conversation.name" @close="dialog = null" @renamed="onRenamed" />
             <DeleteDialog v-if="dialog === 'delete'" :conversation-id="conversation.id" :name="conversation.name" @close="dialog = null" @deleted="onDeleted" />
         </template>
-        <div v-else-if="notFound" class="flex flex-1 items-center justify-center p-6">
+        <div v-else-if="loadFailed" class="flex flex-1 items-center justify-center p-6" role="alert">
+            <div class="max-w-[320px] rounded-[10px] bg-chip px-6 py-5 text-center shadow-bubble">
+                <div class="text-[15px] text-tx">Não foi possível abrir a conversa</div>
+                <div class="mt-1.5 text-[13px] leading-[18px] text-tx2">Confira se o ZapVault está rodando no Terminal.</div>
+                <button type="button" class="mt-3 h-[34px] rounded-[17px] bg-btn px-4 text-[13px] font-medium text-btn-tx" @click="open(conversationId, focusMessageId)">Tentar de novo</button>
+            </div>
+        </div>
+        <template v-else-if="!notFound">
+            <div class="flex h-[60px] flex-none items-center gap-2.5 bg-head pl-[14px]" aria-hidden="true">
+                <div class="h-10 w-10 animate-[zvPulse_1.4s_ease-in-out_infinite] rounded-full bg-skel" />
+                <div class="flex flex-col gap-1.5">
+                    <div class="h-3 w-40 animate-[zvPulse_1.4s_ease-in-out_infinite] rounded bg-skel" />
+                    <div class="h-2.5 w-56 animate-[zvPulse_1.4s_ease-in-out_infinite] rounded bg-skel" />
+                </div>
+            </div>
+            <div class="flex flex-1 items-center justify-center gap-2 text-[12.5px] text-tx2" role="status">
+                <span class="box-border h-3.5 w-3.5 animate-[zvSpin_.8s_linear_infinite] rounded-full border-2 border-div2 border-t-accent" />
+                <span>Abrindo conversa</span>
+            </div>
+        </template>
+        <div v-else class="flex flex-1 items-center justify-center p-6">
             <div class="max-w-[320px] rounded-[10px] bg-chip px-6 py-5 text-center shadow-bubble">
                 <div class="text-[15px] text-tx">Conversa não encontrada</div>
                 <div class="mt-1.5 text-[13px] leading-[18px] text-tx2">Ela pode ter sido excluída do ZapVault.</div>

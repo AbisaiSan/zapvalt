@@ -2,39 +2,13 @@
 
 use App\Models\Backup;
 use App\Models\Setting;
-use App\Support\DataPath;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema;
 
 // Sem RefreshDatabase: VACUUM INTO não roda dentro de transação. Cada teste usa um banco em arquivo
 // dentro de uma pasta de dados temporária.
-
-/** Aponta o acervo para uma pasta de dados nova, com o banco em arquivo. */
-function useFileArchive(bool $migrate = true): string
-{
-    $root = storage_path('framework/testing/backup-'.uniqid());
-    config([
-        'zapvault.data_path' => $root,
-        'database.connections.sqlite.database' => "{$root}/db/zapvault.sqlite",
-        'database.connections.queue.database' => "{$root}/db/queue.sqlite",
-    ]);
-    DataPath::ensure($root, ["{$root}/db/zapvault.sqlite", "{$root}/db/queue.sqlite"]);
-    DB::purge('sqlite');
-    DB::purge('queue');
-    test()->beforeApplicationDestroyed(function () use ($root) {
-        DB::disconnect('sqlite');
-        DB::disconnect('queue');
-        File::deleteDirectory($root);
-    });
-
-    if ($migrate) {
-        Artisan::call('migrate', ['--force' => true]);
-    }
-
-    return $root;
-}
 
 /** @return array{counts: array<string, int>, files: array<string, string>} */
 function archiveFingerprint(string $root): array
@@ -177,4 +151,24 @@ test('não começa um segundo backup enquanto um está em andamento', function (
     // Um backup interrompido há muito tempo não trava os próximos.
     $running->update(['started_at' => now()->subDay()]);
     $this->postJson('/api/backups')->assertStatus(202)->assertJsonPath('status', 'done');
+});
+
+test('zapvault:migrate copia o banco antes de rodar migrations pendentes', function () {
+    $root = useFileArchive();
+    $this->artisan('zapvault:migrate')->expectsOutputToContain('já está atualizado')->assertSuccessful();
+    expect(File::glob("{$root}/backups/*.sqlite"))->toBe([]);
+
+    DB::table('migrations')->where('migration', '2026_10_20_000011_add_participant_index_to_messages')->delete();
+    DB::statement('DROP INDEX IF EXISTS messages_participant_id_index');
+
+    $this->artisan('zapvault:migrate')->expectsOutputToContain('Cópia do banco guardada')->assertSuccessful();
+    expect(File::glob("{$root}/backups/antes-de-atualizar-*.sqlite"))->toHaveCount(1)
+        ->and(DB::table('migrations')->where('migration', '2026_10_20_000011_add_participant_index_to_messages')->exists())->toBeTrue();
+});
+
+test('zapvault:migrate numa instalação nova só cria as tabelas', function () {
+    useFileArchive(migrate: false);
+
+    $this->artisan('zapvault:migrate')->assertSuccessful();
+    expect(Schema::hasTable('messages_fts'))->toBeTrue();
 });

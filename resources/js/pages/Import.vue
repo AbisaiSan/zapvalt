@@ -115,6 +115,10 @@ async function abort() {
                     </template>
                 </div>
 
+                <div v-if="imp.offline" class="rounded-lg bg-warn-bg p-3 text-[13px] leading-[18px] text-warn-tx" role="alert">
+                    Sem resposta do ZapVault. Confira se ele continua rodando no Terminal; a tela tenta de novo sozinha.
+                </div>
+
                 <div v-for="r in rejected" :key="r.name + r.message" class="rounded-lg bg-err-bg p-3 text-[13px] leading-[18px] text-err-tx" role="alert">
                     <b>{{ r.name }}</b>: {{ r.message }}
                 </div>

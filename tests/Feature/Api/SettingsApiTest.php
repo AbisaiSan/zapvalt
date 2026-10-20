@@ -45,3 +45,14 @@ test('mensagens de validação em português', function () {
         ->assertUnprocessable()
         ->assertJsonPath('errors.user_names.0', 'O campo nomes precisa ser uma lista.');
 });
+
+test('mensagens de erro do framework saem em português', function () {
+    $this->getJson('/api/conversations/999999')->assertNotFound()->assertExactJson(['message' => 'Não encontrado. O item pode ter sido excluído do ZapVault.']);
+    $this->postJson('/api/archive/summary')->assertStatus(405)->assertJsonPath('message', 'Operação não permitida.');
+    $this->putJson('/api/settings/password', [])->assertUnprocessable()->assertJsonPath('message', 'Digite a nova senha.');
+    $this->putJson('/api/settings', ['user_names' => 'x', 'theme' => 'roxo'])->assertUnprocessable()->assertJsonPath('message', 'O campo nomes precisa ser uma lista. (e mais 1 erro)');
+
+    // Mensagens escritas pelo ZapVault não mudam.
+    $id = conversationId('Maria Souza');
+    $this->patchJson("/api/conversations/{$id}", ['name' => '   '])->assertUnprocessable()->assertJsonPath('message', 'Informe um nome para a conversa.');
+});

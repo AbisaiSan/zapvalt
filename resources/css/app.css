@@ -1,9 +1,10 @@
 @import 'tailwindcss';
 
-/* Tokens de cor do protótipo (docs/prototipo/ZapVault.dc.html). O tema vem de data-zv-theme no <html>. */
+/* Tokens de cor do protótipo (docs/prototipo/ZapVault.dc.html). O tema vem de data-zv-theme no <html>.
+   No tema claro, --tx2, --accent-tx e --danger foram levemente escurecidos para contraste de 4,5:1 (docs/DECISOES.md). */
 :root {
     --accent: #00A884;
-    --accent-tx: #008069;
+    --accent-tx: #007C66;
     --accent-soft: rgba(0,168,132,.12);
     --btn: #008069;
     --btn-tx: #FFFFFF;
@@ -17,7 +18,7 @@
     --out: #D9FDD3;
     --in: #FFFFFF;
     --tx: #111B21;
-    --tx2: #667781;
+    --tx2: #5D6C75;
     --tx2-out: #56695F;
     --div: #E9EDEF;
     --div2: #C9D1D6;
@@ -30,7 +31,7 @@
     --hl-cur: #F2A900;
     --hl-cur-tx: #111B21;
     --flash: rgba(0,168,132,.22);
-    --danger: #D93F3F;
+    --danger: #D73E3E;
     --ok-bg: #E2F5EE;
     --ok-tx: #00684F;
     --err-bg: #FDE8E7;

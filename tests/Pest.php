@@ -7,6 +7,8 @@ use App\Models\ImportBatch;
 use App\Models\Message;
 use App\Support\DataPath;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Tests\TestCase;
 
@@ -160,4 +162,32 @@ function conversationId(string $name): int
 function messageId(string $conversation, string $body): int
 {
     return (int) Message::query()->where('conversation_id', conversationId($conversation))->where('body', $body)->value('id');
+}
+
+/**
+ * Aponta o acervo e a fila para uma pasta de dados nova, com os bancos em arquivo (para testes
+ * que não podem rodar dentro de transação, como VACUUM INTO). A pasta é apagada no fim.
+ */
+function useFileArchive(bool $migrate = true, ?string $root = null): string
+{
+    $root ??= storage_path('framework/testing/backup-'.uniqid());
+    config([
+        'zapvault.data_path' => $root,
+        'database.connections.sqlite.database' => "{$root}/db/zapvault.sqlite",
+        'database.connections.queue.database' => "{$root}/db/queue.sqlite",
+    ]);
+    DataPath::ensure($root, ["{$root}/db/zapvault.sqlite", "{$root}/db/queue.sqlite"]);
+    DB::purge('sqlite');
+    DB::purge('queue');
+    test()->beforeApplicationDestroyed(function () use ($root) {
+        DB::disconnect('sqlite');
+        DB::disconnect('queue');
+        File::deleteDirectory($root);
+    });
+
+    if ($migrate) {
+        Artisan::call('migrate', ['--force' => true]);
+    }
+
+    return $root;
 }

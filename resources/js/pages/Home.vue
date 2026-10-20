@@ -9,7 +9,7 @@ import { dayOf, fmt, searchShortcut } from '../lib/format';
 
 defineOptions({ layout: AppShell });
 
-const { archive } = useArchive();
+const { archive, refresh } = useArchive();
 const shortcut = searchShortcut();
 
 const summary = computed(() => archive.summary);
@@ -31,6 +31,12 @@ const period = computed(() => {
                 <div class="h-[84px] w-[140px] animate-[zvPulse_1.4s_ease-in-out_infinite] rounded-xl bg-skel" />
                 <div class="h-[84px] w-[140px] animate-[zvPulse_1.4s_ease-in-out_infinite] rounded-xl bg-skel" />
             </div>
+        </template>
+
+        <template v-else-if="archive.error">
+            <h1 class="mt-6 mb-2 text-[26px] font-normal text-tx">Não foi possível abrir o acervo</h1>
+            <p class="m-0 max-w-[400px] text-[14px] leading-[21px] text-pretty text-tx2">Confira se o ZapVault está rodando no Terminal e tente de novo.</p>
+            <button type="button" class="mt-6 inline-flex h-10 items-center rounded-[20px] bg-btn px-5 text-[14px] font-medium text-btn-tx" @click="refresh">Tentar de novo</button>
         </template>
 
         <template v-else-if="!summary?.conversations">

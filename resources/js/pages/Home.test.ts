@@ -3,13 +3,22 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { useArchive } from '../composables/useArchive';
 import Home from './Home.vue';
 
-
 describe('Home', () => {
     const { archive } = useArchive();
 
     beforeEach(() => {
         archive.booting = false;
         archive.summary = null;
+        archive.error = '';
+    });
+
+    it('mostra o erro com Tentar de novo quando a API não responde', () => {
+        archive.error = 'Não foi possível abrir o acervo.';
+        const text = mount(Home).text();
+
+        expect(text).toContain('Não foi possível abrir o acervo');
+        expect(text).toContain('Tentar de novo');
+        expect(text).not.toContain('Seu acervo está vazio');
     });
 
     it('mostra "Abrindo seu acervo…" enquanto carrega', () => {

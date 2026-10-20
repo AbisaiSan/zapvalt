@@ -1,6 +1,7 @@
 import { reactive } from 'vue';
 import { getJson, query } from '../lib/api';
 import type { ArchiveSummary, ConversationItem } from '../types';
+import { useToast } from './useToast';
 
 // Lista de conversas e resumo do acervo, compartilhados entre o painel esquerdo e as páginas.
 const state = reactive({
@@ -37,6 +38,8 @@ async function loadMore(): Promise<void> {
         const known = new Set(state.items.map((c) => c.id));
         state.items.push(...page.items.filter((c) => !known.has(c.id)));
         state.nextCursor = page.next_cursor;
+    } catch {
+        useToast().show('Não foi possível carregar mais conversas.');
     } finally {
         state.loadingMore = false;
     }

@@ -54,4 +54,5 @@ Laravel (versão estável atual), PHP 8.3+, SQLite com FTS5, Inertia 2, Vue 3 (C
 - php artisan zapvault:demo [--scale=large]: gera dados fictícios
 - php artisan zapvault:reindex: reconstrói a busca
 - php artisan zapvault:verify: confere a consistência dos dados
+- php artisan zapvault:migrate: atualiza o banco guardando antes uma cópia (VACUUM INTO)
 - php artisan zapvault:backup e zapvault:restore {arquivo}
