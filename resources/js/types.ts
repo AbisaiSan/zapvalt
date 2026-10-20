@@ -99,3 +99,30 @@ export interface Match {
     sent_at: string;
     count: number;
 }
+
+export type ImportStatus = 'uploading' | 'waiting' | 'processing' | 'done' | 'partial' | 'failed';
+
+export interface ImportFileCard {
+    id: number;
+    name: string;
+    ext: string;
+    size_bytes: number;
+    status: ImportStatus;
+    percent: number;
+    conversation_name: string | null;
+    stats: { new: number; repeated: number; media_found: number; media_missing: number; lines_read: number } | null;
+    unrecognized_count: number;
+    unrecognized_lines: { line: number; text: string }[];
+    error_message: string | null;
+    existing: { id: number; name: string | null } | null;
+    choice: 'merge' | 'separate' | null;
+    needs_choice: boolean;
+}
+
+export interface ImportState {
+    batch_id: number | null;
+    files: ImportFileCard[];
+    name_question: { ask: boolean; candidates: { name: string; hint: string; suggested: boolean }[] } | null;
+    can_commit: boolean;
+    hint: string;
+}

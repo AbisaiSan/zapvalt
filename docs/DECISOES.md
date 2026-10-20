@@ -96,3 +96,11 @@ Decisões pequenas tomadas durante a implementação, com o motivo.
 - **Links.** Só `http` e `https` viram link, abrindo em nova aba com `rel="noopener noreferrer"`; a pontuação do fim fica fora do link. Links e destaque da busca convivem no mesmo texto.
 - **Anexo ausente.** Mídia faltante na exportação mostra "Mídia não incluída na exportação"; arquivo que sumiu do disco mostra "Não foi possível abrir a imagem/o vídeo" com "Tentar de novo", e no áudio, "Não foi possível tocar o áudio".
 - **Aviso temporário.** `ToastHost` no layout, usado pela importação.
+
+## Tarefa 08: importação pela interface
+
+- **Envio.** Arrastar e soltar ou "Escolher arquivos"; cada arquivo vai em pedaços de 8 MB, um arquivo por vez, na ordem escolhida. O limite `post_max_size` de 8 MB do PHP não atrapalhou: foi testado um `.txt` de 21 MB enviado pela tela em três pedaços. Arquivo que não é `.txt` nem `.zip` é recusado já no navegador, com aviso.
+- **Andamento.** A tela consulta `GET /api/imports` a cada 700 ms. O cartão mostra "Enviando N%" (bytes enviados por este navegador), "Aguardando", "Processando N%" (porcentagem real do servidor), "Concluído" ou "Erro" (linhas não reconhecidas ou arquivo não reconhecido, com a mensagem do servidor).
+- **Pergunta do nome.** Começa marcada no nome sugerido, se houver; senão, em "Nenhum destes". O nome escolhido é enviado no Concluir.
+- **Concluir.** Atualiza a lista de conversas, mostra "Importação concluída: N conversas novas e M atualizadas" e volta ao início. Cancelar desfaz tudo no servidor e fecha a tela.
+- **Conferido de ponta a ponta no Chrome**, numa pasta de dados temporária: quatro arquivos (conversa existente com escolha, conversa nova de 220 mil mensagens, arquivo com linhas inválidas e arquivo que não é conversa) analisados em cerca de 10 s; Concluir publicou o esperado; Cancelar deixou banco e disco exatamente como estavam.
