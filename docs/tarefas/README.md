@@ -40,7 +40,7 @@ Quando o usuário pedir um lote, execute só as tarefas dele, na ordem, sem pedi
 | 01 | [Banco e busca](01-banco-e-busca.md) | 1 | concluída |
 | 02 | [Importador e linha de comando](02-importador-e-linha-de-comando.md) | 1 | concluída |
 | 03 | [Dados de demonstração](03-dados-de-demonstracao.md) | 2 | concluída |
-| 04 | [API](04-api.md) | 2 | pendente |
+| 04 | [API](04-api.md) | 2 | concluída |
 | 05 | [Estrutura da interface e lista de conversas](05-estrutura-da-interface-e-lista.md) | 3 | pendente |
 | 06 | [Tela da conversa](06-tela-da-conversa.md) | 3 | pendente |
 | 07 | [Mídia e documentos](07-midia-e-documentos.md) | 4 | pendente |
