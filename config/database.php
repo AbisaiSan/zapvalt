@@ -1,5 +1,6 @@
 <?php
 
+use App\Support\DataPath;
 use Illuminate\Support\Str;
 use Pdo\Mysql;
 
@@ -35,12 +36,12 @@ return [
         'sqlite' => [
             'driver' => 'sqlite',
             'url' => env('DB_URL'),
-            'database' => env('DB_DATABASE', database_path('database.sqlite')),
+            'database' => env('DB_DATABASE', DataPath::resolve(env('ZAPVAULT_DATA_PATH')).'/db/zapvault.sqlite'),
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
-            'busy_timeout' => null,
-            'journal_mode' => null,
-            'synchronous' => null,
+            'busy_timeout' => 10000,
+            'journal_mode' => 'wal',
+            'synchronous' => 'normal',
             'transaction_mode' => 'DEFERRED',
         ],
 

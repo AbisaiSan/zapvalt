@@ -1,9 +1,234 @@
 @import 'tailwindcss';
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
+/* Tokens de cor do protótipo (docs/prototipo/ZapVault.dc.html). O tema vem de data-zv-theme no <html>. */
+:root {
+    --accent: #00A884;
+    --accent-tx: #008069;
+    --accent-soft: rgba(0,168,132,.12);
+    --btn: #008069;
+    --btn-tx: #FFFFFF;
+    --chat: #EFEAE2;
+    --page: #F7F8FA;
+    --panel: #FFFFFF;
+    --head: #F0F2F5;
+    --sel: #F0F2F5;
+    --hover: #F5F6F6;
+    --press: rgba(11,20,26,.07);
+    --out: #D9FDD3;
+    --in: #FFFFFF;
+    --tx: #111B21;
+    --tx2: #667781;
+    --tx2-out: #56695F;
+    --div: #E9EDEF;
+    --div2: #C9D1D6;
+    --chip: #FFFFFF;
+    --sys: #FFFFFF;
+    --inset: rgba(11,20,26,.05);
+    --track: rgba(17,27,33,.16);
+    --hl: #FBE38E;
+    --hl-tx: #111B21;
+    --hl-cur: #F2A900;
+    --hl-cur-tx: #111B21;
+    --flash: rgba(0,168,132,.22);
+    --danger: #D93F3F;
+    --ok-bg: #E2F5EE;
+    --ok-tx: #00684F;
+    --err-bg: #FDE8E7;
+    --err-tx: #B42318;
+    --warn-bg: #FFF5DA;
+    --warn-tx: #6E4A00;
+    --viewer: rgba(240,242,245,.97);
+    --skel: #E4E8EB;
+    --shadow: 0 1px .5px rgba(11,20,26,.13);
+    --pop: 0 4px 18px rgba(11,20,26,.16);
+    --s0: #B5306B;
+    --s1: #1E63B8;
+    --s2: #2B7A3D;
+    --s3: #B4501A;
+    --s4: #7B3FB0;
+    --s5: #00756A;
+    --s6: #A33A3A;
+    --s7: #4F5BB5;
+}
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+html[data-zv-theme="dark"] {
+    --accent: #00A884;
+    --accent-tx: #21C49E;
+    --accent-soft: rgba(0,168,132,.16);
+    --btn: #00A884;
+    --btn-tx: #0B141A;
+    --chat: #0B141A;
+    --page: #0B141A;
+    --panel: #111B21;
+    --head: #202C33;
+    --sel: #2A3942;
+    --hover: #202C33;
+    --press: rgba(233,237,239,.08);
+    --out: #005C4B;
+    --in: #202C33;
+    --tx: #E9EDEF;
+    --tx2: #8696A0;
+    --tx2-out: #A8CFC5;
+    --div: #222D34;
+    --div2: #3B4A54;
+    --chip: #182229;
+    --sys: #182229;
+    --inset: rgba(0,0,0,.2);
+    --track: rgba(233,237,239,.22);
+    --hl: #6E5A12;
+    --hl-tx: #FFF6D6;
+    --hl-cur: #F2B90F;
+    --hl-cur-tx: #111B21;
+    --flash: rgba(0,168,132,.28);
+    --danger: #F15C6D;
+    --ok-bg: #0E3A30;
+    --ok-tx: #5FD6B5;
+    --err-bg: #3D1F22;
+    --err-tx: #FF9C93;
+    --warn-bg: #3A3015;
+    --warn-tx: #F3CB6B;
+    --viewer: rgba(11,20,26,.97);
+    --skel: #24323A;
+    --shadow: 0 1px .5px rgba(0,0,0,.35);
+    --pop: 0 6px 24px rgba(0,0,0,.5);
+    --s0: #F58BB4;
+    --s1: #7DB7FF;
+    --s2: #7FD18F;
+    --s3: #FFA36B;
+    --s4: #C79BFF;
+    --s5: #4FD1C0;
+    --s6: #FF8A80;
+    --s7: #A8B2FF;
+}
+
+@theme inline {
+    --font-sans: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+    --color-accent: var(--accent);
+    --color-accent-tx: var(--accent-tx);
+    --color-accent-soft: var(--accent-soft);
+    --color-btn: var(--btn);
+    --color-btn-tx: var(--btn-tx);
+    --color-chat: var(--chat);
+    --color-page: var(--page);
+    --color-panel: var(--panel);
+    --color-head: var(--head);
+    --color-sel: var(--sel);
+    --color-hover: var(--hover);
+    --color-press: var(--press);
+    --color-out: var(--out);
+    --color-in: var(--in);
+    --color-tx: var(--tx);
+    --color-tx2: var(--tx2);
+    --color-tx2-out: var(--tx2-out);
+    --color-div: var(--div);
+    --color-div2: var(--div2);
+    --color-chip: var(--chip);
+    --color-sys: var(--sys);
+    --color-inset: var(--inset);
+    --color-track: var(--track);
+    --color-hl: var(--hl);
+    --color-hl-tx: var(--hl-tx);
+    --color-hl-cur: var(--hl-cur);
+    --color-hl-cur-tx: var(--hl-cur-tx);
+    --color-flash: var(--flash);
+    --color-danger: var(--danger);
+    --color-ok-bg: var(--ok-bg);
+    --color-ok-tx: var(--ok-tx);
+    --color-err-bg: var(--err-bg);
+    --color-err-tx: var(--err-tx);
+    --color-warn-bg: var(--warn-bg);
+    --color-warn-tx: var(--warn-tx);
+    --color-viewer: var(--viewer);
+    --color-skel: var(--skel);
+    --color-s0: var(--s0);
+    --color-s1: var(--s1);
+    --color-s2: var(--s2);
+    --color-s3: var(--s3);
+    --color-s4: var(--s4);
+    --color-s5: var(--s5);
+    --color-s6: var(--s6);
+    --color-s7: var(--s7);
+
+    --shadow-bubble: var(--shadow);
+    --shadow-pop: var(--pop);
+}
+
+@layer base {
+    html,
+    body {
+        margin: 0;
+        height: 100%;
+        background: var(--panel);
+    }
+
+    body {
+        font-family: var(--font-sans);
+        font-size: 14px;
+        color: var(--tx);
+        -webkit-font-smoothing: antialiased;
+    }
+
+    button {
+        cursor: pointer;
+    }
+
+    input::placeholder {
+        color: var(--tx2);
+    }
+
+    a {
+        color: var(--accent-tx);
+    }
+
+    a:hover {
+        color: var(--accent);
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+    }
+
+    *::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background: var(--div2);
+        border-radius: 3px;
+    }
+
+    *::-webkit-scrollbar-track {
+        background: transparent;
+    }
+}
+
+@keyframes zvPulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes zvSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes zvUp {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 8px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
 }
