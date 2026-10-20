@@ -1,6 +1,6 @@
 # Tarefa 03: Dados de demonstração
 
-**Status:** pendente
+**Status:** concluída
 
 ## Objetivo
 
@@ -14,14 +14,14 @@ Poder preencher o aplicativo com conversas fictícias para desenvolver e testar 
 
 ## Entregas
 
-- [ ] Comando `zapvault:demo` com as 12 conversas fictícias do protótipo, incluindo anexos de exemplo
-- [ ] Opção `--scale=large` gerando cerca de 300 conversas e 1,5 milhão de mensagens
-- [ ] Comando seguro: recusa rodar sobre dados reais sem confirmação explícita
+- [x] Comando `zapvault:demo` com as 12 conversas fictícias do protótipo, incluindo anexos de exemplo
+- [x] Opção `--scale=large` gerando cerca de 300 conversas e 1,5 milhão de mensagens
+- [x] Comando seguro: recusa rodar sobre dados reais sem confirmação explícita
 
 ## Como conferir
 
-- [ ] O comando popula o banco e `zapvault:verify` fica limpo
-- [ ] Os números das conversas de demonstração batem com o protótipo
+- [x] O comando popula o banco e `zapvault:verify` fica limpo
+- [x] Os números das conversas de demonstração batem com o protótipo
 
 ## Regras desta tarefa
 
@@ -31,4 +31,5 @@ Poder preencher o aplicativo com conversas fictícias para desenvolver e testar 
 
 ## Anotações
 
-(Espaço para o Claude Code registrar o que foi decidido ou ficou pendente.)
+- Decisões em `docs/DECISOES.md` (seção "Tarefa 03").
+- Conferido: 12 conversas e 104 mensagens, na mesma ordem e com as mesmas contagens do protótipo; `zapvault:verify --hashes` limpo.
