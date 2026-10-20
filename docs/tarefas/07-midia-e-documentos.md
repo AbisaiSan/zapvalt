@@ -1,6 +1,6 @@
 # Tarefa 07: Mídia e documentos
 
-**Status:** pendente
+**Status:** concluída
 
 ## Objetivo
 
@@ -13,16 +13,16 @@ Exibir e baixar todos os tipos de anexo.
 
 ## Entregas
 
-- [ ] Visualizador de imagem e vídeo
-- [ ] Player de áudio com 1x, 1,5x e 2x
-- [ ] PDF real em iframe do mesmo endereço, outros documentos com download
-- [ ] Anexo ausente tratado com mensagem clara
-- [ ] Links clicáveis (somente `http` e `https`)
+- [x] Visualizador de imagem e vídeo
+- [x] Player de áudio com 1x, 1,5x e 2x
+- [x] PDF real em iframe do mesmo endereço, outros documentos com download
+- [x] Anexo ausente tratado com mensagem clara
+- [x] Links clicáveis (somente `http` e `https`)
 
 ## Como conferir
 
-- [ ] Todos os tipos de anexo abrem
-- [ ] Vídeo e áudio avançam e retrocedem (Range)
+- [x] Todos os tipos de anexo abrem
+- [x] Vídeo e áudio avançam e retrocedem (Range)
 
 ## Regras desta tarefa
 
@@ -32,4 +32,4 @@ Exibir e baixar todos os tipos de anexo.
 
 ## Anotações
 
-(Espaço para o Claude Code registrar o que foi decidido ou ficou pendente.)
+- Decisões em `docs/DECISOES.md` (seção "Tarefa 07"). Conferido no Chrome: visualizador com setas e PDF real no iframe.

@@ -43,7 +43,7 @@ Quando o usuário pedir um lote, execute só as tarefas dele, na ordem, sem pedi
 | 04 | [API](04-api.md) | 2 | concluída |
 | 05 | [Estrutura da interface e lista de conversas](05-estrutura-da-interface-e-lista.md) | 3 | concluída |
 | 06 | [Tela da conversa](06-tela-da-conversa.md) | 3 | concluída |
-| 07 | [Mídia e documentos](07-midia-e-documentos.md) | 4 | pendente |
+| 07 | [Mídia e documentos](07-midia-e-documentos.md) | 4 | concluída |
 | 08 | [Importação pela interface](08-importacao-pela-interface.md) | 4 | pendente |
 | 09 | [Configurações, senha e backup](09-configuracoes-senha-e-backup.md) | 5 | pendente |
 | 10 | [Acabamento e verificação final](10-acabamento-e-verificacao-final.md) | 5 | pendente |
