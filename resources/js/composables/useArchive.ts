@@ -42,6 +42,12 @@ async function loadMore(): Promise<void> {
     }
 }
 
+/** Troca um item da lista (por exemplo, depois de renomear a conversa). */
+function replaceItem(item: ConversationItem): void {
+    const i = state.items.findIndex((c) => c.id === item.id);
+    if (i >= 0) state.items[i] = item;
+}
+
 export function useArchive() {
-    return { archive: state, refresh, loadMore };
+    return { archive: state, refresh, loadMore, replaceItem };
 }

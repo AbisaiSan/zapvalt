@@ -1,7 +1,8 @@
 // Esc fecha, nesta ordem: visualizador, pré-visualização, seletor de data, busca na conversa,
-// busca da lista e, por fim, as páginas Importar e Configurações.
+// busca da lista e, por fim, as páginas Importar e Configurações. Janelas de confirmação e o menu ⋯,
+// que ficam por cima de tudo, fecham antes.
 
-export const ESC = { viewer: 60, preview: 50, datePopover: 40, inChatSearch: 30, listSearch: 20, page: 10 } as const;
+export const ESC = { dialog: 80, menu: 70, viewer: 60, preview: 50, datePopover: 40, inChatSearch: 30, listSearch: 20, page: 10 } as const;
 
 type Handler = () => boolean;
 

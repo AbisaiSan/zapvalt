@@ -5,18 +5,22 @@ import ChatHeader from '../components/ChatHeader.vue';
 import DocPreview from '../components/DocPreview.vue';
 import MediaViewer from '../components/MediaViewer.vue';
 import DateJumpPopover from '../components/chat/DateJumpPopover.vue';
+import DeleteDialog from '../components/chat/DeleteDialog.vue';
 import InChatSearch from '../components/chat/InChatSearch.vue';
 import JumpToBottom from '../components/chat/JumpToBottom.vue';
 import MessageList from '../components/chat/MessageList.vue';
+import RenameDialog from '../components/chat/RenameDialog.vue';
 import ReadOnlyFooter from '../components/ReadOnlyFooter.vue';
+import { useArchive } from '../composables/useArchive';
 import { useAudioPlayer } from '../composables/useAudioPlayer';
 import { useLastConversation } from '../composables/useLastConversation';
 import { useMessageWindow } from '../composables/useMessageWindow';
 import { useNarrow } from '../composables/useNarrow';
+import { useToast } from '../composables/useToast';
 import AppShell from '../layouts/AppShell.vue';
 import { ApiError, getJson, isAbort, query } from '../lib/api';
 import { locateOccurrence } from '../lib/rows';
-import type { ConversationHeader, Match, Message } from '../types';
+import type { ConversationHeader, ConversationItem, Match, Message } from '../types';
 
 defineOptions({ layout: AppShell });
 
@@ -46,6 +50,7 @@ async function open(id: number, focus: number | null) {
     notFound.value = false;
     closeSearch();
     dateOpen.value = false;
+    dialog.value = null;
     viewerMessageId.value = null;
     docMessage.value = null;
     audio.stop();
@@ -174,6 +179,26 @@ function openDoc(messageId: number) {
     docMessage.value = win.messages.find((m) => m.id === messageId && m.attachment) ?? null;
 }
 
+// Menu ⋯: renomear e excluir (só do ZapVault).
+const { refresh: refreshArchive, replaceItem } = useArchive();
+const toast = useToast();
+const dialog = ref<'rename' | 'delete' | null>(null);
+
+function onRenamed(item: ConversationItem) {
+    dialog.value = null;
+    if (conversation.value) conversation.value.name = item.name;
+    replaceItem(item);
+    toast.show('Conversa renomeada');
+}
+
+function onDeleted() {
+    dialog.value = null;
+    last.value = null;
+    refreshArchive();
+    router.visit('/');
+    toast.show('Conversa excluída do ZapVault');
+}
+
 // Por último: o watch imediato usa a busca declarada acima.
 watch(() => [props.conversationId, props.focusMessageId] as const, ([id, focus]) => open(id, focus), { immediate: true });
 
@@ -196,6 +221,8 @@ onBeforeUnmount(() => {
                 @back="router.visit('/')"
                 @toggle-date="dateOpen = !dateOpen"
                 @open-search="openSearch"
+                @rename="dialog = 'rename'"
+                @remove="dialog = 'delete'"
             >
                 <DateJumpPopover v-if="dateOpen && conversation.message_count" :conversation-id="conversation.id" @pick="jumpToDay" @close="dateOpen = false" />
             </ChatHeader>
@@ -240,6 +267,8 @@ onBeforeUnmount(() => {
                 @close="viewerMessageId = null"
             />
             <DocPreview v-if="docMessage" :message="docMessage" @close="docMessage = null" />
+            <RenameDialog v-if="dialog === 'rename'" :conversation-id="conversation.id" :name="conversation.name" @close="dialog = null" @renamed="onRenamed" />
+            <DeleteDialog v-if="dialog === 'delete'" :conversation-id="conversation.id" :name="conversation.name" @close="dialog = null" @deleted="onDeleted" />
         </template>
         <div v-else-if="notFound" class="flex flex-1 items-center justify-center p-6">
             <div class="max-w-[320px] rounded-[10px] bg-chip px-6 py-5 text-center shadow-bubble">

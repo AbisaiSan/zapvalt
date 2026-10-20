@@ -1,5 +1,9 @@
 <?php
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+uses(RefreshDatabase::class);
+
 test('as respostas trazem os cabeçalhos de segurança', function (string $uri, int $status) {
     $response = $this->get($uri)->assertStatus($status);
 

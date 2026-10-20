@@ -1,6 +1,9 @@
 <?php
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
+
+uses(RefreshDatabase::class);
 
 test('as páginas abrem pelo Inertia', function (string $uri, string $component) {
     $this->get($uri)->assertOk()->assertInertia(fn (Assert $page) => $page->component($component));

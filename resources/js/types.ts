@@ -126,3 +126,21 @@ export interface ImportState {
     can_commit: boolean;
     hint: string;
 }
+
+export interface BackupState {
+    id: number;
+    status: 'waiting' | 'running' | 'done' | 'failed';
+    percent: number;
+    file_name: string | null;
+    size_bytes: number | null;
+    error: string | null;
+}
+
+export interface Settings {
+    user_names: string[];
+    theme: 'light' | 'dark';
+    data_path: string;
+    has_password: boolean;
+    last_backup: { at: string; file_name: string; size_bytes: number } | null;
+    current_backup: BackupState | null;
+}

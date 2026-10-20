@@ -6,7 +6,8 @@ defineProps<{ name: IconName; size?: number }>();
 <script lang="ts">
 export type IconName =
     | 'upload' | 'moon' | 'sun' | 'sliders' | 'search' | 'close' | 'person' | 'back' | 'calendar' | 'lock'
-    | 'call' | 'up' | 'down' | 'play' | 'pause' | 'videocam' | 'alert' | 'download' | 'no-media' | 'deleted';
+    | 'call' | 'up' | 'down' | 'play' | 'pause' | 'videocam' | 'alert' | 'download' | 'no-media' | 'deleted'
+    | 'more' | 'folder' | 'check' | 'edit' | 'trash';
 </script>
 
 <template>
@@ -51,6 +52,17 @@ export type IconName =
         </g>
         <g v-else-if="name === 'no-media'" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
             <rect x="3.5" y="4.5" width="17" height="15" rx="2" /><path d="M4 5l16 14" />
+        </g>
+        <g v-else-if="name === 'more'" fill="currentColor">
+            <circle cx="5.5" cy="12" r="1.8" /><circle cx="12" cy="12" r="1.8" /><circle cx="18.5" cy="12" r="1.8" />
+        </g>
+        <path v-else-if="name === 'folder'" d="M3.5 7.5a2 2 0 0 1 2-2h4l2 2h7a2 2 0 0 1 2 2v7.5a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" />
+        <path v-else-if="name === 'check'" d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+        <g v-else-if="name === 'edit'" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z" /><path d="M13.5 6.5l4 4" />
+        </g>
+        <g v-else-if="name === 'trash'" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 12.5h9l1-12.5M10 11v5M14 11v5" />
         </g>
         <g v-else-if="name === 'deleted'" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
             <circle cx="12" cy="12" r="8" /><path d="M6.5 6.5l11 11" />

@@ -1,14 +1,16 @@
 <?php
 
 use App\Http\Controllers\Api\ArchiveController;
+use App\Http\Controllers\Api\BackupController;
 use App\Http\Controllers\Api\ConversationController;
 use App\Http\Controllers\Api\ImportController;
+use App\Http\Controllers\Api\LockController;
 use App\Http\Controllers\Api\MessageController;
-use App\Http\Controllers\Api\PendingController;
 use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\SettingsController;
 use App\Http\Controllers\MediaController;
 use App\Models\Conversation;
+use App\Support\AppLock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -23,6 +25,9 @@ Route::get('/c/{id}', fn (Request $request, int $id) => Inertia::render('Chat', 
 ]))->whereNumber('id')->name('chat');
 Route::get('/importar', fn () => Inertia::render('Import'))->name('import');
 Route::get('/configuracoes', fn () => Inertia::render('Settings'))->name('settings');
+Route::get('/desbloquear', fn (Request $request) => AppLock::isUnlocked($request->session())
+    ? redirect()->route('home')
+    : Inertia::render('Unlock'))->name('unlock');
 
 Route::prefix('api')->group(function () {
     Route::get('archive/summary', [ArchiveController::class, 'summary']);
@@ -50,13 +55,13 @@ Route::prefix('api')->group(function () {
     Route::get('settings', [SettingsController::class, 'show']);
     Route::put('settings', [SettingsController::class, 'update']);
 
-    // Tarefa 09: senha, bloqueio e backup.
-    Route::put('settings/password', PendingController::class);
-    Route::delete('settings/password', PendingController::class);
-    Route::post('unlock', PendingController::class);
-    Route::post('lock', PendingController::class);
-    Route::post('backups', PendingController::class);
-    Route::get('backups/{backup}', PendingController::class)->whereNumber('backup');
+    Route::put('settings/password', [LockController::class, 'setPassword']);
+    Route::delete('settings/password', [LockController::class, 'removePassword']);
+    Route::post('unlock', [LockController::class, 'unlock'])->name('api.unlock');
+    Route::post('lock', [LockController::class, 'lock']);
+
+    Route::post('backups', [BackupController::class, 'store']);
+    Route::get('backups/{backup}', [BackupController::class, 'show'])->whereNumber('backup');
 });
 
 Route::get('media/{attachment}', [MediaController::class, 'show'])->whereNumber('attachment');

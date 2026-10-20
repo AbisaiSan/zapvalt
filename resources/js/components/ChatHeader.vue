@@ -3,10 +3,11 @@ import { computed } from 'vue';
 import { dayOf, fmt, plural } from '../lib/format';
 import type { ConversationHeader } from '../types';
 import Avatar from './Avatar.vue';
+import ChatMenu from './chat/ChatMenu.vue';
 import Icon from './Icon.vue';
 
 const props = defineProps<{ conversation: ConversationHeader; showBack: boolean; dateOpen?: boolean; searchOpen?: boolean }>();
-defineEmits<{ back: []; toggleDate: []; openSearch: [] }>();
+defineEmits<{ back: []; toggleDate: []; openSearch: []; rename: []; remove: [] }>();
 
 const subtitle = computed(() => {
     const c = props.conversation;
@@ -57,6 +58,7 @@ const subtitle = computed(() => {
         >
             <Icon name="search" :size="21" />
         </button>
+        <ChatMenu @rename="$emit('rename')" @remove="$emit('remove')" />
         <slot />
     </header>
 </template>

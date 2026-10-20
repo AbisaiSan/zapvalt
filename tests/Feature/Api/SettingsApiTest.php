@@ -16,6 +16,7 @@ test('mostra as configurações', function () {
         'data_path' => $this->root,
         'has_password' => false,
         'last_backup' => null,
+        'current_backup' => null,
     ]);
 });
 
@@ -33,12 +34,6 @@ test('salva nomes e tema e recalcula quem é você', function () {
 
 test('valida o tema', function () {
     $this->putJson('/api/settings', ['theme' => 'roxo'])->assertUnprocessable();
-});
-
-test('senha, bloqueio e backup respondem 501 até a tarefa 09', function () {
-    $this->putJson('/api/settings/password', ['password' => '123456'])->assertStatus(501);
-    $this->postJson('/api/unlock', ['password' => '123456'])->assertStatus(501);
-    $this->postJson('/api/backups')->assertStatus(501);
 });
 
 test('erros da API vêm em JSON', function () {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Archive\BackupWriter;
 use App\Http\Controllers\Controller;
 use App\Import\ImportService;
 use App\Models\Setting;
@@ -57,6 +58,7 @@ class SettingsController extends Controller
             'data_path' => config('zapvault.data_path'),
             'has_password' => Setting::get('password_hash') !== null,
             'last_backup' => Setting::get('last_backup'),
+            'current_backup' => BackupWriter::active()?->toApi(),
         ];
     }
 }

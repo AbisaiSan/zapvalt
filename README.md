@@ -74,6 +74,30 @@ Outros comandos:
 - `php artisan zapvault:verify`: confere contagens, índice de busca e arquivos de mídia (`--hashes` confere também o conteúdo de cada arquivo)
 - `php artisan zapvault:reindex`: reconstrói o índice de busca
 
+## Backup e restauração
+
+Pela tela: Configurações, Backup, "Fazer backup agora". Pelo terminal:
+
+```bash
+php artisan zapvault:backup
+```
+
+O backup é um `.zip` em `{pasta de dados}/backups/ZapVault-backup-AAAA-MM-DD.zip`, com uma cópia consistente do banco, a mídia e as miniaturas. Ele pode ser feito com o aplicativo aberto; importações ainda não concluídas ficam de fora. Uma cópia dentro da própria pasta de dados não protege contra a perda do disco: copie o arquivo para um disco externo, de preferência criptografado.
+
+Para restaurar, aponte `ZAPVAULT_DATA_PATH`, no `.env`, para uma pasta nova (vazia ou inexistente) e rode:
+
+```bash
+php artisan zapvault:restore /caminho/para/ZapVault-backup-AAAA-MM-DD.zip
+```
+
+O comando recusa restaurar por cima de uma pasta que já tem conversas ou anexos. No fim, ele roda o `zapvault:verify --hashes` para conferir contagens e o conteúdo de cada arquivo. A senha, se estava ativa, volta junto.
+
+## Senha
+
+Em Configurações, "Senha (opcional)" pede uma senha de pelo menos 6 caracteres sempre que o ZapVault for aberto; "Bloquear agora" fecha na hora. O desbloqueio dura até o navegador ser fechado ou ficar 2 horas sem uso, e no máximo 12 horas. Depois de 5 senhas erradas, cada nova tentativa espera mais (até 60 segundos).
+
+A senha protege a abertura do aplicativo, mas não criptografa o banco nem os anexos. Para proteger os dados de verdade, ative a criptografia do disco (FileVault, no Mac). Se esquecer a senha, pare o aplicativo e rode `php artisan tinker --execute "App\Support\AppLock::removePassword()"` na pasta do projeto.
+
 ## Testes
 
 ```bash
@@ -85,4 +109,4 @@ npm test        # frontend (Vitest)
 
 A especificação, o protótipo e as tarefas ficam em `docs/`. As decisões tomadas durante o desenvolvimento ficam em `docs/DECISOES.md`.
 
-Status: em desenvolvimento (tarefas 00 a 08 concluídas)
+Status: em desenvolvimento (tarefas 00 a 09 concluídas)
