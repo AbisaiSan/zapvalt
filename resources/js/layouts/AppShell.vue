@@ -7,6 +7,7 @@ import ListSkeleton from '../components/ListSkeleton.vue';
 import SearchField from '../components/SearchField.vue';
 import SearchResults from '../components/SearchResults.vue';
 import SidebarHeader from '../components/SidebarHeader.vue';
+import ToastHost from '../components/ToastHost.vue';
 import { useArchive } from '../composables/useArchive';
 import { useEscape } from '../composables/useEscape';
 import { useNarrow } from '../composables/useNarrow';
@@ -91,5 +92,6 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey));
         <main v-show="!(narrow && !showRight)" class="relative flex h-full min-w-0 flex-[1_1_auto] flex-col bg-page">
             <slot />
         </main>
+        <ToastHost />
     </div>
 </template>

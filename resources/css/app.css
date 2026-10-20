@@ -238,3 +238,14 @@ html[data-zv-theme="dark"] {
         transform: translate(-50%, 0);
     }
 }
+
+@keyframes zvToast {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

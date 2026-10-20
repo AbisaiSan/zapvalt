@@ -2,6 +2,8 @@
 import { Head, router } from '@inertiajs/vue3';
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
 import ChatHeader from '../components/ChatHeader.vue';
+import DocPreview from '../components/DocPreview.vue';
+import MediaViewer from '../components/MediaViewer.vue';
 import DateJumpPopover from '../components/chat/DateJumpPopover.vue';
 import InChatSearch from '../components/chat/InChatSearch.vue';
 import JumpToBottom from '../components/chat/JumpToBottom.vue';
@@ -14,7 +16,7 @@ import { useNarrow } from '../composables/useNarrow';
 import AppShell from '../layouts/AppShell.vue';
 import { ApiError, getJson, isAbort, query } from '../lib/api';
 import { locateOccurrence } from '../lib/rows';
-import type { ConversationHeader, Match } from '../types';
+import type { ConversationHeader, Match, Message } from '../types';
 
 defineOptions({ layout: AppShell });
 
@@ -44,6 +46,8 @@ async function open(id: number, focus: number | null) {
     notFound.value = false;
     closeSearch();
     dateOpen.value = false;
+    viewerMessageId.value = null;
+    docMessage.value = null;
     audio.stop();
 
     try {
@@ -157,10 +161,17 @@ watch(inQ, (q) => {
     }, 250);
 });
 
-// Visualizador e pré-visualização chegam na tarefa 07; por enquanto o arquivo abre em outra aba.
-function openAttachment(messageId: number) {
-    const m = win.messages.find((x) => x.id === messageId);
-    if (m?.attachment) window.open(m.attachment.url, '_blank', 'noopener,noreferrer');
+// Visualizador de imagem e vídeo, e pré-visualização de documento.
+const viewerMessageId = ref<number | null>(null);
+const docMessage = ref<Message | null>(null);
+
+function openMedia(messageId: number) {
+    audio.stop();
+    viewerMessageId.value = messageId;
+}
+
+function openDoc(messageId: number) {
+    docMessage.value = win.messages.find((m) => m.id === messageId && m.attachment) ?? null;
 }
 
 // Por último: o watch imediato usa a busca declarada acima.
@@ -212,13 +223,23 @@ onBeforeUnmount(() => {
                 :current="current"
                 @older="loadOlder"
                 @newer="loadNewer"
-                @open-media="openAttachment"
-                @open-doc="openAttachment"
+                @open-media="openMedia"
+                @open-doc="openDoc"
                 @position="jump = $event"
             />
 
             <JumpToBottom v-if="jump.showJump && win.messages.length" :below="jump.below" :more="win.hasNewer" @jump="jumpToBottom" />
             <ReadOnlyFooter :file-name="conversation.source_file_name" />
+
+            <MediaViewer
+                v-if="viewerMessageId"
+                :conversation-id="conversation.id"
+                :message-id="viewerMessageId"
+                :avatar-index="conversation.avatar_index"
+                :narrow="narrow"
+                @close="viewerMessageId = null"
+            />
+            <DocPreview v-if="docMessage" :message="docMessage" @close="docMessage = null" />
         </template>
         <div v-else-if="notFound" class="flex flex-1 items-center justify-center p-6">
             <div class="max-w-[320px] rounded-[10px] bg-chip px-6 py-5 text-center shadow-bubble">

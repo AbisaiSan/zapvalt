@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { timeOf } from '../../lib/format';
+import { withLinks } from '../../lib/links';
 import { ranges, segs, type Range } from '../../lib/search';
 import type { Message } from '../../types';
 import HighlightText from '../HighlightText.vue';
@@ -44,7 +45,7 @@ const bubbleStyle = computed(() => {
 /** Trechos com destaque para o campo pesquisável da mensagem. */
 function highlighted(text: string) {
     const rs: Range[] = props.term ? ranges(text, props.term).map(([a, b], i) => [a, b, i === props.currentNth]) : [];
-    return segs(text, rs);
+    return withLinks(text, segs(text, rs));
 }
 
 const textSegments = computed(() => highlighted(m.value.text ?? ''));

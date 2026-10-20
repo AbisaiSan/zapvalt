@@ -88,3 +88,11 @@ Decisões pequenas tomadas durante a implementação, com o motivo.
 - **Imagens, vídeos e documentos.** Até a tarefa 07 (visualizador e pré-visualização), clicar abre o arquivo em outra aba. O botão de baixar do documento já funciona.
 - **Vídeo sem pôster.** Sem `ffmpeg` não há miniatura do vídeo; o balão mostra um fundo escuro com o nome do arquivo, o botão de reprodução e a duração, se conhecida.
 - **Demonstração.** O aviso de criptografia, que no protótipo não tem horário, passa a usar o horário da mensagem seguinte em vez de 00:00.
+
+## Tarefa 07: mídia e documentos
+
+- **Visualizador.** Imagens e vídeos de toda a conversa (vindos de `/media`, não só os da janela carregada), com setas na tela e no teclado, contador "3 de 12", Baixar e Esc. Vídeo usa `<video controls>`, com avanço e retrocesso pelo `Range`.
+- **Pré-visualização.** PDF real em `iframe` do mesmo endereço (permitido pela CSP e pelo `X-Frame-Options: SAMEORIGIN`). Os demais tipos mostram "Pré-visualização indisponível" e "Baixar arquivo". A linha de detalhes traz páginas, tamanho, data e hora e "enviado por", como no protótipo.
+- **Links.** Só `http` e `https` viram link, abrindo em nova aba com `rel="noopener noreferrer"`; a pontuação do fim fica fora do link. Links e destaque da busca convivem no mesmo texto.
+- **Anexo ausente.** Mídia faltante na exportação mostra "Mídia não incluída na exportação"; arquivo que sumiu do disco mostra "Não foi possível abrir a imagem/o vídeo" com "Tentar de novo", e no áudio, "Não foi possível tocar o áudio".
+- **Aviso temporário.** `ToastHost` no layout, usado pela importação.

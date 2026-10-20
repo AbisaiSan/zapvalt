@@ -7,6 +7,8 @@ const state = reactive({
     position: 0,
     duration: 0,
     speeds: {} as Record<number, number>,
+    /** Áudio que não pôde ser aberto (arquivo ausente ou ilegível). */
+    failed: null as number | null,
 });
 
 let audio: HTMLAudioElement | null = null;
@@ -21,6 +23,10 @@ function element(): HTMLAudioElement {
     });
     audio.addEventListener('play', () => (state.playing = true));
     audio.addEventListener('pause', () => (state.playing = false));
+    audio.addEventListener('error', () => {
+        state.failed = state.id;
+        state.playing = false;
+    });
     audio.addEventListener('ended', () => {
         state.playing = false;
         state.position = 0;
@@ -34,6 +40,7 @@ function load(id: number, url: string, duration: number | null) {
     a.pause();
     a.src = url;
     state.id = id;
+    state.failed = null;
     state.position = 0;
     state.duration = duration ?? 0;
     a.playbackRate = state.speeds[id] ?? 1;

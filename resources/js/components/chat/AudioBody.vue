@@ -60,7 +60,8 @@ function onKey(event: KeyboardEvent) {
                 <div class="absolute top-1.5 left-0 h-1 rounded-sm bg-accent" :style="{ width: `${pct}%` }" />
                 <div class="absolute top-0.5 -ml-1.5 h-3 w-3 rounded-full bg-accent" :style="{ left: `${pct}%` }" />
             </div>
-            <div class="mt-px text-[11px]" :class="mine ? 'text-tx2-out' : 'text-tx2'">{{ time }}</div>
+            <div v-if="player.failed === messageId" class="mt-px text-[11px] text-err-tx" role="alert">Não foi possível tocar o áudio</div>
+            <div v-else class="mt-px text-[11px]" :class="mine ? 'text-tx2-out' : 'text-tx2'">{{ time }}</div>
         </div>
         <button
             type="button"
