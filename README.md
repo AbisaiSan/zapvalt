@@ -70,6 +70,7 @@ Sem `--commit`, fora do modo interativo, nada é gravado.
 
 Outros comandos:
 
+- `php artisan zapvault:demo`: cria as 12 conversas fictícias do protótipo, com mídia de exemplo (`--scale=large` gera cerca de 300 conversas e 1,5 milhão de mensagens; com conversas no acervo, pergunta antes ou exige `--force`)
 - `php artisan zapvault:verify`: confere contagens, índice de busca e arquivos de mídia (`--hashes` confere também o conteúdo de cada arquivo)
 - `php artisan zapvault:reindex`: reconstrói o índice de busca
 
@@ -84,4 +85,4 @@ npm test        # frontend (Vitest)
 
 A especificação, o protótipo e as tarefas ficam em `docs/`. As decisões tomadas durante o desenvolvimento ficam em `docs/DECISOES.md`.
 
-Status: em desenvolvimento (tarefas 00 a 02 concluídas)
+Status: em desenvolvimento (tarefas 00 a 03 concluídas)

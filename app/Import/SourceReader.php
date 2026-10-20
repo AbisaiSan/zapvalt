@@ -96,7 +96,7 @@ class SourceReader
         $zip = new ZipArchive;
 
         if ($zip->open($path, ZipArchive::RDONLY) !== true) {
-            throw new ImportException('O arquivo .zip está corrompido ou não pôde ser aberto.');
+            throw new UnreadableZip('O arquivo .zip está corrompido ou não pôde ser aberto.');
         }
 
         $this->zips[] = $zip;
@@ -144,10 +144,16 @@ class SourceReader
             );
         }
 
-        if ($depth < (int) config('zapvault.import.max_zip_depth', 2)) {
+        // Com o texto da conversa no pacote, um .zip interno é anexo (documento), não outra conversa.
+        if ($texts === [] && $depth < (int) config('zapvault.import.max_zip_depth', 2)) {
             foreach ($nested as $entry) {
                 $temp = $this->extractTemp($zip, $entry);
-                array_push($sources, ...$this->readZip($temp, basename($entry), $depth + 1));
+
+                try {
+                    array_push($sources, ...$this->readZip($temp, basename($entry), $depth + 1));
+                } catch (UnreadableZip) {
+                    // .zip interno que não abre é ignorado; os demais seguem.
+                }
             }
         }
 

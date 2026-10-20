@@ -171,3 +171,28 @@ test('conversa do iPhone no .zip usa o nome do pacote', function () {
     expect(Conversation::query()->active()->sole()->name)->toBe('Grupo Projeto Alfa')
         ->and(Message::query()->where('body', '00000012-PHOTO-2026-10-18-10-07-30.jpg')->value('kind'))->toBe('image');
 });
+
+test('.zip anexado como documento na conversa não é tratado como outra conversa', function () {
+    $attachedZip = file_get_contents(makeZip(['nota.txt' => 'nota fiscal fictícia'], 'interno.zip'));
+    $chat = $this->chat."20/10/2026 10:00 - Maria Souza: NF_setembro.zip (arquivo anexado)\n20/10/2026 10:01 - Maria Souza: Relatorio.zip (arquivo anexado)\n";
+
+    $batch = analyzeFiles([mariaZip($chat, ['NF_setembro.zip' => $attachedZip, 'Relatorio.zip' => 'não é zip de verdade'])]);
+
+    expect($batch->files)->toHaveCount(1)
+        ->and($batch->files->first()->status)->toBe(ImportFile::DONE);
+
+    app(ImportService::class)->commit($batch);
+
+    expect(Message::query()->where('body', 'NF_setembro.zip')->value('kind'))->toBe('doc')
+        ->and(Message::query()->where('body', 'Relatorio.zip')->value('kind'))->toBe('doc');
+});
+
+test('pacote com .zip interno corrompido importa as demais conversas', function () {
+    $inner = file_get_contents(mariaZip($this->chat));
+    $outer = makeZip(['Conversa do WhatsApp com Maria Souza.zip' => $inner, 'quebrado.zip' => 'lixo'], 'takeout.zip');
+
+    $batch = analyzeFiles([$outer]);
+
+    expect($batch->files)->toHaveCount(1)
+        ->and($batch->files->first()->status)->toBe(ImportFile::DONE);
+});

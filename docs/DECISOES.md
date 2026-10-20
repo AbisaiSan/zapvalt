@@ -41,3 +41,14 @@ Decisões pequenas tomadas durante a implementação, com o motivo.
 - **`zapvault:import` pelo terminal.** Recusa rodar se houver uma importação em andamento na tela. `--commit` conclui sem perguntas (soma às conversas existentes, salvo `--separate`); sem `--commit` e fora do modo interativo, a análise é descartada e nada é gravado.
 - **Fixture com nome neutro.** O `.gitignore` ignora arquivos que começam com `WhatsApp`, então o exemplo no formato AM/PM se chama `eduardo-am-pm.txt` e o nome original é passado no teste.
 - **Desempenho medido.** Um `.txt` sintético de 200 mil mensagens (18 MB) foi importado em cerca de 6 segundos; reimportar levou 8,5 segundos e resultou em 0 mensagens novas.
+
+## Tarefa 03: dados de demonstração
+
+- **A demonstração passa pelo importador.** O `zapvault:demo` monta, para cada conversa do protótipo, um export no formato Android com mídia de mentira dentro de um `.zip` e importa pelo mesmo caminho dos arquivos reais. Assim as chaves de duplicidade, a busca e as contagens são idênticas às de uma importação de verdade, e rodar de novo não duplica nada.
+- **Datas deslocadas.** O protótipo fixa "hoje" em 20/10/2026; as datas são deslocadas para que esse dia vire a data real, e os rótulos "Hoje" e "Ontem" batem com o protótipo.
+- **Nome do usuário.** "Moura Consultoria" (o nome em Configurações no protótipo) é adicionado aos nomes do usuário.
+- **Mídia de mentira.** Imagens JPEG coloridas com faixas e o nome do arquivo; figurinhas WebP; áudio WAV silencioso com a duração do protótipo; PDFs com o número de páginas e o tamanho do protótipo; outros documentos com o tamanho do protótipo. Vídeo só é de verdade se o `ffmpeg` existir; sem ele, o arquivo não abre e a tela mostra o estado de erro. A imagem marcada como quebrada no protótipo (`IMG-20261016-WA0004.jpg`) é gravada corrompida, para o mesmo efeito. Arquivos de origem (`.txt` ou `.zip`) e cores de avatar são os do protótipo.
+- **Segurança.** Com conversas no acervo, o comando pergunta antes (padrão "não"); fora do modo interativo, só roda com `--force`. Também recusa rodar com importação em andamento.
+- **Escala grande.** `--scale=large` soma 288 conversas sintéticas (uma com 100 mil mensagens, cerca de 10% grupos) às 12 do protótipo: 300 conversas e 1,5 milhão de mensagens, em cerca de 65 segundos e 770 MB de banco.
+- **Correção no importador.** Um `.zip` anexado como documento dentro de uma conversa (por exemplo, `NF_setembro.zip`) era tratado como outro pacote de conversas e derrubava a importação. Agora, se o pacote já tem o texto da conversa, os `.zip` internos são anexos; os `.zip` internos só são abertos como conversas quando não há texto, e os que não abrem são ignorados.
+- **Índice em `messages.participant_id`.** O SQLite não cria índice para chave estrangeira; sem ele, o `zapvault:verify` levava 53 segundos na escala grande. Com o índice, menos de 1 segundo.
