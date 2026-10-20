@@ -21,14 +21,15 @@ test('cria a pasta de dados com permissão restrita e as subpastas', function ()
     }
 });
 
-test('cria o arquivo do banco quando ele fica dentro da pasta de dados', function () {
-    DataPath::ensure($this->root, "{$this->root}/db/zapvault.sqlite");
+test('cria os arquivos de banco quando ele fica dentro da pasta de dados', function () {
+    DataPath::ensure($this->root, ["{$this->root}/db/zapvault.sqlite", "{$this->root}/db/queue.sqlite"]);
 
-    expect(file_exists("{$this->root}/db/zapvault.sqlite"))->toBeTrue();
+    expect(file_exists("{$this->root}/db/zapvault.sqlite"))->toBeTrue()
+        ->and(file_exists("{$this->root}/db/queue.sqlite"))->toBeTrue();
 });
 
 test('não cria banco fora da pasta de dados', function () {
-    DataPath::ensure($this->root, ':memory:');
+    DataPath::ensure($this->root, [':memory:']);
 
     expect(file_exists(':memory:'))->toBeFalse();
 });

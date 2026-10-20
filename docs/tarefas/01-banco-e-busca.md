@@ -1,6 +1,6 @@
 # Tarefa 01: Banco e busca
 
-**Status:** pendente
+**Status:** concluída
 
 ## Objetivo
 
@@ -14,16 +14,16 @@ Criar o banco com todas as tabelas e a busca de texto, sem ainda importar nada.
 
 ## Entregas
 
-- [ ] Migrations de `settings`, `import_batches`, `import_files`, `conversations`, `participants`, `messages`, `attachments`, `backups`
-- [ ] Tabela `messages_fts` (FTS5, trigram, tabela externa) com gatilhos de inserção, atualização e exclusão
-- [ ] Índices descritos na especificação e `queue.sqlite` separado para os jobs
-- [ ] Serviço de normalização de texto (minúsculas, sem acentos, sem caracteres invisíveis) usado em `search_text`
-- [ ] Fábricas com dados fictícios
+- [x] Migrations de `settings`, `import_batches`, `import_files`, `conversations`, `participants`, `messages`, `attachments`, `backups`
+- [x] Tabela `messages_fts` (FTS5, trigram, tabela externa) com gatilhos de inserção, atualização e exclusão
+- [x] Índices descritos na especificação e `queue.sqlite` separado para os jobs
+- [x] Serviço de normalização de texto (minúsculas, sem acentos, sem caracteres invisíveis) usado em `search_text`
+- [x] Fábricas com dados fictícios
 
 ## Como conferir
 
-- [ ] Testes de normalização e de FTS passam com dados criados por fábrica
-- [ ] `php artisan migrate:fresh` funciona no ambiente de testes
+- [x] Testes de normalização e de FTS passam com dados criados por fábrica
+- [x] `php artisan migrate:fresh` funciona no ambiente de testes
 
 ## Regras desta tarefa
 
@@ -33,4 +33,5 @@ Criar o banco com todas as tabelas e a busca de texto, sem ainda importar nada.
 
 ## Anotações
 
-(Espaço para o Claude Code registrar o que foi decidido ou ficou pendente.)
+- Decisões em `docs/DECISOES.md` (seção "Tarefa 01").
+- A consulta de busca completa (contadores com teto, cursor, abas) entra com os endpoints na tarefa 04; aqui ficaram o índice, a normalização e os auxiliares de frase FTS e de `LIKE`.

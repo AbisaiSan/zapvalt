@@ -32,9 +32,11 @@ class DataPath
     }
 
     /**
-     * Cria a pasta de dados (permissão 700), as subpastas e o arquivo do banco, se faltarem.
+     * Cria a pasta de dados (permissão 700), as subpastas e os arquivos de banco, se faltarem.
+     *
+     * @param  array<int, string|null>  $databases
      */
-    public static function ensure(string $root, ?string $database = null): void
+    public static function ensure(string $root, array $databases = []): void
     {
         if (! is_dir($root)) {
             File::ensureDirectoryExists($root, 0700);
@@ -45,9 +47,11 @@ class DataPath
             File::ensureDirectoryExists("{$root}/{$dir}", 0700);
         }
 
-        if ($database !== null && str_starts_with($database, $root.'/') && ! file_exists($database)) {
-            touch($database);
-            @chmod($database, 0600);
+        foreach ($databases as $database) {
+            if ($database !== null && str_starts_with($database, $root.'/') && ! file_exists($database)) {
+                touch($database);
+                @chmod($database, 0600);
+            }
         }
     }
 }

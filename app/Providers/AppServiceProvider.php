@@ -20,9 +20,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        DataPath::ensure(
-            config('zapvault.data_path'),
+        DataPath::ensure(config('zapvault.data_path'), [
             config('database.connections.sqlite.database'),
-        );
+            config('database.connections.queue.database'),
+        ]);
     }
 }

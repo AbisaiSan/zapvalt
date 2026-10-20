@@ -45,6 +45,18 @@ return [
             'transaction_mode' => 'DEFERRED',
         ],
 
+        // Filas em um arquivo separado, para não disputar gravação com o acervo.
+        'queue' => [
+            'driver' => 'sqlite',
+            'database' => env('DB_QUEUE_DATABASE', DataPath::resolve(env('ZAPVAULT_DATA_PATH')).'/db/queue.sqlite'),
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+            'busy_timeout' => 10000,
+            'journal_mode' => 'wal',
+            'synchronous' => 'normal',
+            'transaction_mode' => 'DEFERRED',
+        ],
+
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DB_URL'),
